@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Incidencia extends Model
 {
@@ -34,5 +35,13 @@ class Incidencia extends Model
     public function creador(): BelongsTo
     {
         return $this->belongsTo(User::class, 'creador_id');
+    }
+
+    /**
+     * Comentarios de la incidencia.
+     */
+    public function comentarios(): HasMany
+    {
+        return $this->hasMany(ComentarioIncidencia::class);
     }
 }

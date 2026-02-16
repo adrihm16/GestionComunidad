@@ -120,6 +120,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('inmuebles', InmuebleController::class);
     Route::resource('recibos', ReciboController::class);
     Route::resource('incidencias', IncidenciaController::class);
+    Route::post('incidencias/{incidencia}/comentarios', [IncidenciaController::class, 'addComment'])->name('incidencias.comentarios.store');
+    Route::post('incidencias/{incidencia}/estado', [IncidenciaController::class, 'updateEstado'])->name('incidencias.estado.update');
     Route::resource('noticias', NoticiaController::class);
     Route::resource('eventos', EventoController::class);
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Incidencia;
+use App\Models\ComentarioIncidencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -51,8 +52,46 @@ class IncidenciaController extends Controller
 
     public function show(Incidencia $incidencia)
     {
-        $incidencia->load('creador');
+        $incidencia->load(['creador', 'comentarios.user']);
         return view('incidencias.show', compact('incidencia'));
+    }
+
+    /**
+     * Add a comment to an incidencia.
+     */
+    public function addComment(Request $request, Incidencia $incidencia)
+    {
+        $validated = $request->validate([
+            'contenido' => 'required|string|max:1000',
+        ]);
+
+        $incidencia->comentarios()->create([
+            'user_id' => Auth::id(),
+            'contenido' => $validated['contenido'],
+        ]);
+
+        return redirect()->route('incidencias.show', $incidencia)->with('success', 'Comentario añadido.');
+    }
+
+    /**
+     * Update the status of an incidencia (admin only).
+     */
+    public function updateEstado(Request $request, Incidencia $incidencia)
+    {
+        if (Auth::user()->rol_sistema !== 'admin') {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'estado' => 'required|in:pendiente,en_proceso,resuelta',
+        ]);
+
+        $incidencia->update([
+            'estado' => $validated['estado'],
+            'fecha_actualizacion' => now(),
+        ]);
+
+        return redirect()->route('incidencias.show', $incidencia)->with('success', 'Estado actualizado.');
     }
 
     public function edit(Incidencia $incidencia)

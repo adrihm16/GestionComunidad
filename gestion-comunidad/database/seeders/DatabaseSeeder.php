@@ -7,6 +7,7 @@ use App\Models\Inmueble;
 use App\Models\Noticia;
 use App\Models\Evento;
 use App\Models\Incidencia;
+use App\Models\ComentarioIncidencia;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -195,8 +196,9 @@ class DatabaseSeeder extends Seeder
             ],
         ];
 
+        $incidenciaModels = [];
         foreach ($incidencias as $i => $inc) {
-            Incidencia::create([
+            $incidenciaModels[] = Incidencia::create([
                 'creador_id' => $inc['creador_id'],
                 'titulo' => $inc['titulo'],
                 'descripcion' => $inc['descripcion'],
@@ -207,5 +209,22 @@ class DatabaseSeeder extends Seeder
                 'fecha_actualizacion' => now()->subDays(count($incidencias) - $i),
             ]);
         }
+
+        // Comentarios en incidencias
+        ComentarioIncidencia::create([
+            'incidencia_id' => $incidenciaModels[0]->id,
+            'user_id' => $admin->id,
+            'contenido' => 'Ya hemos contactado con el fontanero. Vendrá mañana a revisar la tubería.',
+        ]);
+        ComentarioIncidencia::create([
+            'incidencia_id' => $incidenciaModels[0]->id,
+            'user_id' => $vecinoUsers[0]->id,
+            'contenido' => 'Perfecto, muchas gracias por la rapidez. La fuga es en la zona derecha del techo.',
+        ]);
+        ComentarioIncidencia::create([
+            'incidencia_id' => $incidenciaModels[1]->id,
+            'user_id' => $vecinoUsers[3]->id,
+            'contenido' => 'Yo también he notado que falta luz en esa zona. Podrían revisar también la del piso 4.',
+        ]);
     }
 }

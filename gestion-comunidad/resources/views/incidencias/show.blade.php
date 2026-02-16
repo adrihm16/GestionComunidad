@@ -93,9 +93,109 @@
                 <div class="text-sm text-main leading-relaxed whitespace-pre-line">
                     {{ $incidencia->descripcion }}
                 </div>
+
+                {{-- Admin: Status change buttons --}}
+                @if(Auth::user()->rol_sistema === 'admin')
+                    <hr class="border-gray-100">
+                    <div class="flex flex-col gap-2">
+                        <p class="text-xs font-semibold text-muted uppercase tracking-wide">Cambiar estado</p>
+                        <div class="flex flex-wrap gap-2">
+                            @php
+                                $estados = [
+                                    'pendiente' => ['label' => 'Pendiente', 'active' => 'bg-amber-500 text-white shadow-amber-200', 'inactive' => 'bg-amber-50 text-amber-700 hover:bg-amber-100'],
+                                    'en_proceso' => ['label' => 'En proceso', 'active' => 'bg-blue-500 text-white shadow-blue-200', 'inactive' => 'bg-blue-50 text-blue-700 hover:bg-blue-100'],
+                                    'resuelta' => ['label' => 'Resuelta', 'active' => 'bg-emerald-500 text-white shadow-emerald-200', 'inactive' => 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100'],
+                                ];
+                            @endphp
+                            @foreach($estados as $estadoKey => $estadoConfig)
+                                <form action="{{ route('incidencias.estado.update', $incidencia) }}" method="POST" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="estado" value="{{ $estadoKey }}">
+                                    <button type="submit"
+                                            @if($incidencia->estado === $estadoKey) disabled @endif
+                                            class="px-4 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 shadow-sm
+                                                   {{ $incidencia->estado === $estadoKey
+                                                        ? $estadoConfig['active'] . ' cursor-default'
+                                                        : $estadoConfig['inactive'] . ' cursor-pointer hover:scale-105 active:scale-95' }}">
+                                        {{ $estadoConfig['label'] }}
+                                    </button>
+                                </form>
+                            @endforeach
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
     @endcomponent
+
+    {{-- ============================================= --}}
+    {{-- COMMENTS SECTION                              --}}
+    {{-- ============================================= --}}
+    <section>
+        @include('components.ui.section-title', [
+            'title' => 'Comentarios (' . $incidencia->comentarios->count() . ')',
+        ])
+
+        {{-- Add comment form --}}
+        @component('components.ui.card', ['hover' => false])
+            <form action="{{ route('incidencias.comentarios.store', $incidencia) }}" method="POST" class="flex flex-col gap-3">
+                @csrf
+                <textarea
+                    name="contenido"
+                    rows="3"
+                    placeholder="Escribe un comentario..."
+                    required
+                    maxlength="1000"
+                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                           placeholder-gray-400 bg-white resize-none
+                           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                           transition-all duration-200"
+                >{{ old('contenido') }}</textarea>
+                @error('contenido')
+                    <p class="text-xs text-red-500">{{ $message }}</p>
+                @enderror
+                <div class="flex justify-end">
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium
+                                   shadow-md transition-all duration-200 hover:scale-105 active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                        </svg>
+                        Comentar
+                    </button>
+                </div>
+            </form>
+        @endcomponent
+
+        {{-- Comments list --}}
+        <div class="flex flex-col gap-3 mt-3">
+            @forelse ($incidencia->comentarios->sortByDesc('created_at') as $comentario)
+                @component('components.ui.card', ['hover' => false, 'bodyClass' => 'p-3'])
+                    <div class="flex gap-3">
+                        {{-- User avatar --}}
+                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 shrink-0 mt-0.5">
+                            <span class="text-xs font-semibold text-primary">
+                                {{ strtoupper(substr($comentario->user->nombre, 0, 1)) }}{{ strtoupper(substr($comentario->user->apellidos, 0, 1)) }}
+                            </span>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-1">
+                                <span class="text-sm font-medium text-main">
+                                    {{ $comentario->user->nombre }} {{ $comentario->user->apellidos }}
+                                </span>
+                                <span class="text-xs text-muted">
+                                    {{ $comentario->created_at->diffForHumans() }}
+                                </span>
+                            </div>
+                            <p class="text-sm text-main leading-relaxed whitespace-pre-line">{{ $comentario->contenido }}</p>
+                        </div>
+                    </div>
+                @endcomponent
+            @empty
+                <p class="text-sm text-muted text-center py-4">No hay comentarios todavía. ¡Sé el primero!</p>
+            @endforelse
+        </div>
+    </section>
 
 </div>
 
