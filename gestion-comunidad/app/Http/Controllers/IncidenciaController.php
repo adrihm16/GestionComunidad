@@ -10,7 +10,7 @@ class IncidenciaController extends Controller
 {
     public function index()
     {
-        $incidencias = Incidencia::with('creador')->orderBy('fecha_creacion', 'desc')->get();
+        $incidencias = Incidencia::with('creador')->orderBy('fecha_creacion', 'desc')->paginate(10);
         return view('incidencias.index', compact('incidencias'));
     }
 
@@ -25,15 +25,27 @@ class IncidenciaController extends Controller
             'titulo' => 'required|string|max:100',
             'descripcion' => 'required|string',
             'prioridad' => 'required|in:baja,media,alta',
-            'foto_url' => 'nullable|string|max:255',
+            'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
-        $validated['creador_id'] = Auth::id();
-        $validated['estado'] = 'pendiente';
-        $validated['fecha_creacion'] = now();
-        $validated['fecha_actualizacion'] = now();
+        // Handle file upload
+        $fotoUrl = null;
+        if ($request->hasFile('foto')) {
+            $path = $request->file('foto')->store('incidencias', 'public');
+            $fotoUrl = '/storage/' . $path;
+        }
 
-        Incidencia::create($validated);
+        Incidencia::create([
+            'creador_id' => Auth::id(),
+            'titulo' => $validated['titulo'],
+            'descripcion' => $validated['descripcion'],
+            'prioridad' => $validated['prioridad'],
+            'foto_url' => $fotoUrl,
+            'estado' => 'pendiente',
+            'fecha_creacion' => now(),
+            'fecha_actualizacion' => now(),
+        ]);
+
         return redirect()->route('incidencias.index')->with('success', 'Incidencia creada correctamente.');
     }
 

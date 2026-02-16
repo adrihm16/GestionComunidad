@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 
+    {{-- Base styles fallback (prevents white flash while Tailwind CDN loads) --}}
+    <style>
+        body { background-color: #F5F7FA; font-family: 'Poppins', sans-serif; color: #1A1A1A; }
+    </style>
+
     {{-- Tailwind via CDN (dev fallback) --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>

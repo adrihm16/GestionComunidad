@@ -116,65 +116,60 @@
     </section>
 
     {{-- ============================================= --}}
+    {{-- SECTION 3.5: Incidencias activas              --}}
+    {{-- ============================================= --}}
+    <section>
+        <div class="flex items-center justify-between mb-1">
+            @include('components.ui.section-title', ['title' => 'Incidencias activas'])
+            <a href="{{ route('incidencias.index') }}" class="text-xs font-medium text-primary hover:underline">Ver todas →</a>
+        </div>
+        @forelse ($ultimasIncidencias as $incidencia)
+            <a href="{{ route('incidencias.show', $incidencia) }}" class="block mb-2">
+                @component('components.ui.card', ['hover' => true, 'bodyClass' => 'p-3'])
+                    <div class="flex items-center gap-3">
+                        {{-- Priority icon --}}
+                        @php
+                            $prioridadColor = match($incidencia->prioridad) {
+                                'alta' => 'bg-red-100 text-red-600',
+                                'media' => 'bg-orange-100 text-orange-600',
+                                default => 'bg-gray-100 text-gray-500',
+                            };
+                        @endphp
+                        <div class="flex items-center justify-center w-9 h-9 rounded-lg {{ $prioridadColor }} shrink-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-medium text-sm text-main truncate">{{ $incidencia->titulo }}</p>
+                            <p class="text-xs text-muted">{{ $incidencia->fecha_creacion->format('d M Y') }}</p>
+                        </div>
+                        @php
+                            $estadoBadge = match($incidencia->estado) {
+                                'pendiente' => 'bg-amber-100 text-amber-700',
+                                'en_proceso' => 'bg-blue-100 text-blue-700',
+                                default => 'bg-gray-100 text-gray-600',
+                            };
+                        @endphp
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-medium {{ $estadoBadge }} shrink-0">
+                            {{ ucfirst(str_replace('_', ' ', $incidencia->estado)) }}
+                        </span>
+                    </div>
+                @endcomponent
+            </a>
+        @empty
+            @component('components.ui.card', ['hover' => false, 'bodyClass' => 'p-3'])
+                <p class="text-sm text-muted text-center">No hay incidencias activas 🎉</p>
+            @endcomponent
+        @endforelse
+    </section>
+
+    {{-- ============================================= --}}
     {{-- SECTION 4: Calendario                         --}}
     {{-- ============================================= --}}
     <section>
         @include('components.ui.section-title', ['title' => 'Calendario'])
-        @component('components.ui.card', ['hover' => false])
-            {{-- Month header --}}
-            <div class="flex items-center justify-between mb-3">
-                <button class="p-1 rounded-lg hover:bg-primary/10 transition-colors" aria-label="Mes anterior">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-main" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
-                    </svg>
-                </button>
-                <span class="font-semibold text-sm text-main">Febrero 2026</span>
-                <button class="p-1 rounded-lg hover:bg-primary/10 transition-colors" aria-label="Mes siguiente">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-main" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-                    </svg>
-                </button>
-            </div>
-
-            {{-- Day labels --}}
-            <div class="grid grid-cols-7 gap-1 mb-1">
-                @foreach(['L', 'M', 'X', 'J', 'V', 'S', 'D'] as $day)
-                    <div class="text-center text-xs font-medium text-muted py-1">{{ $day }}</div>
-                @endforeach
-            </div>
-
-            {{-- Calendar grid (February 2026 starts on Sunday) --}}
-            <div class="grid grid-cols-7 gap-1">
-                @for($i = 0; $i < 6; $i++)
-                    <div></div>
-                @endfor
-
-                @for($day = 1; $day <= 28; $day++)
-                    @php
-                        $isToday = ($day == 13);
-                        $hasEvent = in_array($day, [13, 28]);
-                    @endphp
-                    <button class="relative flex items-center justify-center w-full aspect-square rounded-lg text-xs font-medium
-                                   transition-all duration-200
-                                   {{ $isToday
-                                       ? 'bg-primary text-white shadow-sm'
-                                       : 'text-main hover:bg-primary/10' }}">
-                        {{ $day }}
-                        @if($hasEvent && !$isToday)
-                            <span class="absolute bottom-0.5 w-1 h-1 rounded-full bg-accent"></span>
-                        @endif
-                    </button>
-                @endfor
-            </div>
-
-            {{-- Upcoming events legend --}}
-            <div class="mt-3 pt-3 border-t border-gray-100">
-                <div class="flex items-center gap-2 text-xs text-muted">
-                    <span class="w-1.5 h-1.5 rounded-full bg-accent"></span>
-                    <span>28 Feb — Junta ordinaria de vecinos</span>
-                </div>
-            </div>
-        @endcomponent
+        @include('components.ui.calendar', ['calendarData' => $calendarData])
     </section>
 
 </div>
