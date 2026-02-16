@@ -14,8 +14,7 @@
     {{-- Vecinos List --}}
     <div class="flex flex-col gap-4" id="vecinos-list">
 
-        @forelse ($vecinos as $vecino)
-            @foreach ($vecino->inmuebles as $inmueble)
+        @forelse ($inmuebles as $inmueble)
                 {{-- Vecino Card --}}
                 @component('components.ui.card', [
                     'hover' => true,
@@ -24,14 +23,13 @@
                     'cardClass' => '',
                 ])
                     <p class="font-poppins font-medium text-base text-main">
-                        {{ $vecino->nombre }} {{ $vecino->apellidos }}
+                        {{ $inmueble->propietario->nombre }} {{ $inmueble->propietario->apellidos }}
                     </p>
 
-                    @if($vecino->cargo_comunidad && $vecino->cargo_comunidad !== '' && $vecino->cargo_comunidad !== '-')
-                        @include('components.ui.badge', ['text' => $vecino->cargo_comunidad, 'variant' => 'accent'])
+                    @if($inmueble->propietario->cargo_comunidad && $inmueble->propietario->cargo_comunidad !== '' && $inmueble->propietario->cargo_comunidad !== '-')
+                        @include('components.ui.badge', ['text' => $inmueble->propietario->cargo_comunidad, 'variant' => 'accent'])
                     @endif
                 @endcomponent
-            @endforeach
         @empty
             {{-- Empty state --}}
             <div class="flex flex-col items-center justify-center py-12 text-center">
@@ -48,6 +46,11 @@
             </div>
         @endforelse
 
+    </div>
+
+    {{-- Pagination --}}
+    <div class="mt-2">
+        {{ $inmuebles->withQueryString()->links() }}
     </div>
 
 </div>

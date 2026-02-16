@@ -2,7 +2,21 @@
 <nav class="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100"
      style="box-shadow: 0 -2px 12px rgba(0,0,0,0.06);"
      id="bottom-nav">
-    <div class="flex items-center justify-center gap-8 px-5 py-2 max-w-screen-xl mx-auto">
+    <div class="flex items-center justify-center gap-6 px-5 py-2 max-w-screen-xl mx-auto">
+        {{-- Inicio Button --}}
+        <a href="{{ url('/') }}" id="bottom-nav-inicio"
+           class="group flex items-center justify-center"
+           aria-label="Inicio">
+            <div class="flex items-center justify-center w-11 h-11 rounded-xl bg-primary shadow-lg
+                        transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl
+                        group-hover:shadow-primary/30 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-white"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>
+            </div>
+        </a>
 
         {{-- Noticias Button --}}
         <a href="{{ url('/noticias') }}" id="bottom-nav-noticias"

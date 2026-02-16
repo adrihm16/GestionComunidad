@@ -12,29 +12,22 @@
         @include('components.ui.section-title', ['title' => 'Últimas noticias'])
         <div class="grid grid-cols-2 gap-3">
 
-            {{-- News Card 1 --}}
-            @component('components.ui.card', ['hover' => true, 'bodyClass' => 'p-3'])
-                <p class="font-semibold text-sm text-main leading-snug mb-1">Obras en la fachada</p>
-                <p class="text-xs text-muted">Se iniciarán obras de rehabilitación en la fachada principal.</p>
-                <p class="text-xs text-muted mt-2 flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                    </svg>
-                    13 Feb 2026
-                </p>
-            @endcomponent
-
-            {{-- News Card 2 --}}
-            @component('components.ui.card', ['hover' => true, 'bodyClass' => 'p-3'])
-                <p class="font-semibold text-sm text-main leading-snug mb-1">Nueva zona infantil</p>
-                <p class="text-xs text-muted">Aprobada la instalación de un parque infantil en el patio.</p>
-                <p class="text-xs text-muted mt-2 flex items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                    </svg>
-                    10 Feb 2026
-                </p>
-            @endcomponent
+            @forelse ($ultimasNoticias as $noticia)
+                <a href="{{ route('noticias.show', $noticia) }}" class="block">
+                    @component('components.ui.card', ['hover' => true, 'bodyClass' => 'p-3'])
+                        <p class="font-semibold text-sm text-main leading-snug mb-1">{{ $noticia->titulo }}</p>
+                        <p class="text-xs text-muted line-clamp-2">{{ Str::limit($noticia->contenido, 80) }}</p>
+                        <p class="text-xs text-muted mt-2 flex items-center gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                            </svg>
+                            {{ $noticia->fecha_publicacion->format('d M Y') }}
+                        </p>
+                    @endcomponent
+                </a>
+            @empty
+                <p class="col-span-2 text-sm text-muted text-center py-4">No hay noticias publicadas</p>
+            @endforelse
 
         </div>
     </section>

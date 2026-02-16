@@ -1,0 +1,22 @@
+﻿
+   ReflectionException 
+
+  Class "App\Http\Controllers\SumaController" does not exist
+
+  at vendor\laravel\framework\src\Illuminate\Foundation\Console\RouteListCommand.php:235
+    231Ôûò             if ($this->isFrameworkController($route)) {
+    232Ôûò                 return false;
+    233Ôûò             }
+    234Ôûò 
+  Ô×£ 235Ôûò             $path = (new ReflectionClass($route->getControllerClass()))
+    236Ôûò                 ->getFileName();
+    237Ôûò         } else {
+    238Ôûò             return false;
+    239Ôûò         }
+
+  1   vendor\laravel\framework\src\Illuminate\Foundation\Console\RouteListCommand.php:235
+      ReflectionClass::__construct("App\Http\Controllers\SumaController")
+
+  2   vendor\laravel\framework\src\Illuminate\Foundation\Console\RouteListCommand.php:149
+      Illuminate\Foundation\Console\RouteListCommand::isVendorRoute(Object(Illuminate\Routing\Route))
+

@@ -3,21 +3,64 @@
         style="box-shadow: 0 1px 8px rgba(0,0,0,0.06);">
     <div class="flex items-center justify-between px-5 py-3 max-w-screen-xl mx-auto">
 
-        {{-- Left: User avatar + name --}}
-        <a href="{{ url('/') }}" class="flex items-center gap-3 group" id="header-user-link">
-            {{-- Avatar circle with user icon --}}
-            <div class="relative flex items-center justify-center w-10 h-10 rounded-full border-2 border-main
-                        transition-all duration-300 group-hover:border-primary group-hover:shadow-md">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-main transition-colors duration-300 group-hover:text-primary"
+        {{-- Left: User avatar + name + dropdown --}}
+        <div class="relative" id="user-dropdown-container">
+            <button type="button" id="user-dropdown-btn"
+                    class="flex items-center gap-3 group focus:outline-none"
+                    aria-label="Menú de usuario" aria-expanded="false">
+                {{-- Avatar circle with user icon --}}
+                <div class="relative flex items-center justify-center w-10 h-10 rounded-full border-2 border-main
+                            transition-all duration-300 group-hover:border-primary group-hover:shadow-md">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-main transition-colors duration-300 group-hover:text-primary"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    </svg>
+                </div>
+                <span class="text-main font-medium text-base transition-colors duration-300 group-hover:text-primary">
+                    {{ Auth::check() ? Auth::user()->nombre : 'Usuario' }}
+                </span>
+                {{-- Chevron --}}
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-muted transition-transform duration-200" id="user-dropdown-chevron"
                      fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
+            </button>
+
+            {{-- Dropdown menu --}}
+            <div id="user-dropdown-menu"
+                 class="hidden absolute left-0 top-full mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50
+                        opacity-0 translate-y-1 transition-all duration-200">
+
+                {{-- Profile link --}}
+                <a href="{{ url('/profile') }}"
+                   class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-main
+                          hover:bg-primary/5 hover:text-primary transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                              d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Mi Perfil
+                </a>
+
+                {{-- Divider --}}
+                <div class="border-t border-gray-100"></div>
+
+                {{-- Logout --}}
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit"
+                            class="flex items-center gap-3 w-full px-4 py-3 text-sm font-medium text-red-500
+                                   hover:bg-red-50 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                  d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                        </svg>
+                        Cerrar Sesión
+                    </button>
+                </form>
             </div>
-            <span class="text-main font-medium text-base transition-colors duration-300 group-hover:text-primary">
-                Usuario
-            </span>
-        </a>
+        </div>
 
         {{-- Right: Action icons --}}
         <nav class="flex items-center gap-4" id="header-nav-actions">
@@ -26,12 +69,13 @@
                     class="relative flex items-center justify-center w-10 h-10 rounded-xl
                            transition-all duration-300 hover:bg-primary/10 hover:shadow-sm
                            focus:outline-none focus:ring-2 focus:ring-primary/30"
-                    aria-label="Menú de navegación">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-main"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                </svg>
+                    aria-label="Menú de navegación" aria-expanded="false">
+                {{-- Animated hamburger bars --}}
+                <div class="flex flex-col justify-center items-center w-6 h-6 gap-[5px]">
+                    <span id="bar-1" class="block w-5 h-[2px] bg-main rounded-full transition-all duration-300 origin-center"></span>
+                    <span id="bar-2" class="block w-5 h-[2px] bg-main rounded-full transition-all duration-300"></span>
+                    <span id="bar-3" class="block w-5 h-[2px] bg-main rounded-full transition-all duration-300 origin-center"></span>
+                </div>
             </button>
 
             {{-- Notification Bell --}}
@@ -56,8 +100,8 @@
 
     {{-- Mobile Slide-Down Menu --}}
     <nav id="header-mobile-menu"
-         class="hidden border-t border-gray-100 bg-white"
-         style="box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);">
+         class="border-t border-gray-100 bg-white overflow-hidden transition-all duration-300 ease-in-out"
+         style="max-height: 0; opacity: 0; box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);">
         <div class="flex flex-col px-5 py-3 gap-1">
             <a href="{{ url('/') }}"
                class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-main font-medium text-sm
@@ -77,14 +121,14 @@
                 </svg>
                 Vecinos
             </a>
-            <a href="{{ url('/suma') }}"
+            <a href="{{ url('/noticias') }}"
                class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-main font-medium text-sm
                       transition-all duration-200 hover:bg-primary/10 hover:text-primary">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M15.75 15.75V18m-7.5-6.75h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V13.5zm0 2.25h.008v.008H8.25v-.008zm0 2.25h.008v.008H8.25V18zm2.498-6.75h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V13.5zm0 2.25h.007v.008h-.007v-.008zm0 2.25h.007v.008h-.007V18zm2.504-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zm0 2.25h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V18zm2.498-6.75h.008v.008h-.008v-.008zm0 2.25h.008v.008h-.008V13.5zM8.25 6h7.5v2.25h-7.5V6zM12 2.25c-1.892 0-3.758.11-5.593.322C5.307 2.7 4.5 3.65 4.5 4.757V19.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V4.757c0-1.108-.806-2.057-1.907-2.185A48.507 48.507 0 0012 2.25z" />
+                          d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
                 </svg>
-                Suma
+                Noticias
             </a>
         </div>
     </nav>
@@ -93,19 +137,77 @@
 {{-- Menu toggle script --}}
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+        // Mobile menu toggle with hamburger → X animation
         const menuBtn = document.getElementById('header-menu-btn');
         const mobileMenu = document.getElementById('header-mobile-menu');
+        const bar1 = document.getElementById('bar-1');
+        const bar2 = document.getElementById('bar-2');
+        const bar3 = document.getElementById('bar-3');
+        let menuOpen = false;
 
         if (menuBtn && mobileMenu) {
             menuBtn.addEventListener('click', function () {
-                mobileMenu.classList.toggle('hidden');
-                // Smooth slide animation
-                if (!mobileMenu.classList.contains('hidden')) {
+                menuOpen = !menuOpen;
+                menuBtn.setAttribute('aria-expanded', menuOpen);
+
+                if (menuOpen) {
+                    // Animate bars to X
+                    bar1.style.transform = 'translateY(7px) rotate(45deg)';
+                    bar2.style.opacity = '0';
+                    bar2.style.transform = 'scaleX(0)';
+                    bar3.style.transform = 'translateY(-7px) rotate(-45deg)';
+
+                    // Slide menu open
                     mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
                     mobileMenu.style.opacity = '1';
                 } else {
+                    // Animate bars back to hamburger
+                    bar1.style.transform = 'translateY(0) rotate(0)';
+                    bar2.style.opacity = '1';
+                    bar2.style.transform = 'scaleX(1)';
+                    bar3.style.transform = 'translateY(0) rotate(0)';
+
+                    // Slide menu closed
                     mobileMenu.style.maxHeight = '0';
                     mobileMenu.style.opacity = '0';
+                }
+            });
+        }
+
+        // User dropdown toggle
+        const dropdownBtn = document.getElementById('user-dropdown-btn');
+        const dropdownMenu = document.getElementById('user-dropdown-menu');
+        const chevron = document.getElementById('user-dropdown-chevron');
+
+        if (dropdownBtn && dropdownMenu) {
+            dropdownBtn.addEventListener('click', function () {
+                const isOpen = !dropdownMenu.classList.contains('hidden');
+
+                if (isOpen) {
+                    dropdownMenu.classList.add('opacity-0', 'translate-y-1');
+                    dropdownMenu.classList.remove('opacity-100', 'translate-y-0');
+                    chevron.classList.remove('rotate-180');
+                    dropdownBtn.setAttribute('aria-expanded', 'false');
+                    setTimeout(() => dropdownMenu.classList.add('hidden'), 200);
+                } else {
+                    dropdownMenu.classList.remove('hidden');
+                    requestAnimationFrame(() => {
+                        dropdownMenu.classList.remove('opacity-0', 'translate-y-1');
+                        dropdownMenu.classList.add('opacity-100', 'translate-y-0');
+                    });
+                    chevron.classList.add('rotate-180');
+                    dropdownBtn.setAttribute('aria-expanded', 'true');
+                }
+            });
+
+            // Close on click outside
+            document.addEventListener('click', function (e) {
+                if (!document.getElementById('user-dropdown-container').contains(e.target)) {
+                    dropdownMenu.classList.add('opacity-0', 'translate-y-1');
+                    dropdownMenu.classList.remove('opacity-100', 'translate-y-0');
+                    chevron.classList.remove('rotate-180');
+                    dropdownBtn.setAttribute('aria-expanded', 'false');
+                    setTimeout(() => dropdownMenu.classList.add('hidden'), 200);
                 }
             });
         }

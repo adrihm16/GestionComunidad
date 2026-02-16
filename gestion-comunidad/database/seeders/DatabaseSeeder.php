@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Inmueble;
+use App\Models\Noticia;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -66,6 +67,40 @@ class DatabaseSeeder extends Seeder
                 'bloque' => 'A',
                 'piso' => $v['piso'],
                 'puerta' => $v['puerta'],
+            ]);
+        }
+
+        // Noticias
+        $noticias = [
+            [
+                'titulo' => 'Corte de agua programado para el 20 de febrero',
+                'contenido' => 'Se informa a todos los vecinos que el próximo jueves 20 de febrero habrá un corte de agua desde las 9:00 hasta las 14:00 por trabajos de mantenimiento en la red general.',
+                'adjunto_url' => 'https://picsum.photos/seed/water/800/400',
+            ],
+            [
+                'titulo' => 'Nueva normativa de reciclaje en la comunidad',
+                'contenido' => 'A partir del 1 de marzo se implementará un nuevo sistema de reciclaje. Se instalarán contenedores adicionales en el garaje.',
+                'adjunto_url' => 'https://picsum.photos/seed/recycle/800/400',
+            ],
+            [
+                'titulo' => 'Acta de la junta ordinaria de enero 2026',
+                'contenido' => 'Se adjunta el acta de la última junta ordinaria celebrada el 15 de enero de 2026. Se aprobaron los presupuestos para el nuevo año.',
+                'adjunto_url' => null,
+            ],
+            [
+                'titulo' => 'Obras en la fachada: inicio previsto en marzo',
+                'contenido' => 'Las obras de rehabilitación de la fachada principal comenzarán a mediados de marzo. Se colocará andamiaje en la zona este del edificio.',
+                'adjunto_url' => 'https://picsum.photos/seed/building/800/400',
+            ],
+        ];
+
+        foreach ($noticias as $i => $n) {
+            Noticia::create([
+                'autor_id' => $admin->id,
+                'titulo' => $n['titulo'],
+                'contenido' => $n['contenido'],
+                'adjunto_url' => $n['adjunto_url'],
+                'fecha_publicacion' => now()->subDays(count($noticias) - $i),
             ]);
         }
     }
