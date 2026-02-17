@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Inmueble;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -85,6 +86,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        // Cargar inmuebles del usuario
+        $user->load('inmuebles');
+        
         return view('admin.users.edit', compact('user'));
     }
 
@@ -131,5 +135,41 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.index')
             ->with('success', 'Usuario eliminado correctamente.');
+    }
+
+    /**
+     * Store a new inmueble for the user.
+     */
+    public function storeInmueble(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'tipo' => ['required', Rule::in(['piso', 'local', 'garaje', 'trastero'])],
+            'bloque' => ['nullable', 'string', 'max:10'],
+            'piso' => ['required', 'string', 'max:10'],
+            'puerta' => ['required', 'string', 'max:10'],
+        ]);
+
+        $validated['propietario_id'] = $user->id;
+        Inmueble::create($validated);
+
+        return redirect()->route('admin.users.edit', $user)
+            ->with('success', 'Inmueble asignado correctamente.');
+    }
+
+    /**
+     * Remove an inmueble from the user.
+     */
+    public function destroyInmueble(User $user, Inmueble $inmueble)
+    {
+        // Verificar que el inmueble pertenece al usuario
+        if ($inmueble->propietario_id !== $user->id) {
+            return redirect()->route('admin.users.edit', $user)
+                ->with('error', 'Este inmueble no pertenece a este usuario.');
+        }
+
+        $inmueble->delete();
+
+        return redirect()->route('admin.users.edit', $user)
+            ->with('success', 'Inmueble eliminado correctamente.');
     }
 }

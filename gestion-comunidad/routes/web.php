@@ -133,6 +133,12 @@ Route::middleware('auth')->group(function () {
     // Admin routes - Only accessible by admin users
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        
+        // Inmuebles management for users
+        Route::post('users/{user}/inmuebles', [\App\Http\Controllers\Admin\UserController::class, 'storeInmueble'])
+            ->name('users.inmuebles.store');
+        Route::delete('users/{user}/inmuebles/{inmueble}', [\App\Http\Controllers\Admin\UserController::class, 'destroyInmueble'])
+            ->name('users.inmuebles.destroy');
     });
 });
 
