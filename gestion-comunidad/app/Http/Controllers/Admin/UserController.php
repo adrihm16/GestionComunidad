@@ -64,10 +64,11 @@ class UserController extends Controller
         $validated['password'] = Hash::make($validated['password']);
         $validated['fecha_registro'] = now();
 
-        User::create($validated);
+        $user = User::create($validated);
 
-        return redirect()->route('admin.users.index')
-            ->with('success', 'Usuario creado correctamente.');
+        // Redirigir a editar para que pueda agregar inmuebles inmediatamente
+        return redirect()->route('admin.users.edit', $user)
+            ->with('success', 'Usuario creado correctamente. Ahora puedes asignarle inmuebles.');
     }
 
     /**
