@@ -129,6 +129,11 @@ Route::middleware('auth')->group(function () {
     Route::post('incidencias/{incidencia}/estado', [IncidenciaController::class, 'updateEstado'])->name('incidencias.estado.update');
     Route::resource('noticias', NoticiaController::class);
     Route::resource('eventos', EventoController::class);
+    
+    // Admin routes - Only accessible by admin users
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+    });
 });
 
 Route::get('/inicio', function () {
