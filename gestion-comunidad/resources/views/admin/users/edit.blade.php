@@ -275,7 +275,11 @@
                                         @if($inmueble->bloque) - Bloque {{ $inmueble->bloque }} @endif
                                     </p>
                                     <p class="text-xs text-muted">
-                                        {{ $inmueble->piso }}º{{ $inmueble->puerta }}
+                                        @if($inmueble->tipo === 'garaje' || $inmueble->tipo === 'trastero')
+                                            {{ $inmueble->piso }}
+                                        @else
+                                            {{ $inmueble->piso }}º{{ $inmueble->puerta }}
+                                        @endif
                                     </p>
                                 </div>
                             </div>
@@ -302,7 +306,7 @@
             @endif
 
             {{-- Add Inmueble Form (Collapsible) --}}
-            <div x-data="{ open: false }" class="border-t border-gray-100 pt-4">
+            <div x-data="{ open: false, tipo: '' }" class="border-t border-gray-100 pt-4">
                 <button type="button" 
                         @click="open = !open"
                         class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl 
@@ -327,6 +331,7 @@
                         <div>
                             <label class="block text-sm font-medium text-main mb-1.5">Tipo <span class="text-red-500">*</span></label>
                             <select name="tipo" 
+                                    x-model="tipo"
                                     required
                                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
                                            focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
@@ -351,31 +356,58 @@
                                           transition-all duration-200">
                         </div>
 
-                        {{-- Piso --}}
-                        <div>
-                            <label class="block text-sm font-medium text-main mb-1.5">Piso <span class="text-red-500">*</span></label>
-                            <input type="text" 
-                                   name="piso"
-                                   placeholder="1, 2, 3, B, S..."
-                                   maxlength="10"
-                                   required
-                                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                          transition-all duration-200">
-                        </div>
+                        {{-- Campos para PISO y LOCAL (Piso + Puerta separados) --}}
+                        <template x-if="tipo === 'piso' || tipo === 'local'">
+                            <div class="col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {{-- Piso --}}
+                                <div>
+                                    <label class="block text-sm font-medium text-main mb-1.5">Piso <span class="text-red-500">*</span></label>
+                                    <input type="text" 
+                                           name="piso"
+                                           placeholder="1, 2, 3, B, S..."
+                                           maxlength="10"
+                                           required
+                                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                                                  focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                  transition-all duration-200">
+                                </div>
 
-                        {{-- Puerta --}}
-                        <div>
-                            <label class="block text-sm font-medium text-main mb-1.5">Puerta <span class="text-red-500">*</span></label>
-                            <input type="text" 
-                                   name="puerta"
-                                   placeholder="A, B, 1, 2..."
-                                   maxlength="10"
-                                   required
-                                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                          transition-all duration-200">
-                        </div>
+                                {{-- Puerta --}}
+                                <div>
+                                    <label class="block text-sm font-medium text-main mb-1.5">Puerta <span class="text-red-500">*</span></label>
+                                    <input type="text" 
+                                           name="puerta"
+                                           placeholder="A, B, 1, 2..."
+                                           maxlength="10"
+                                           required
+                                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                                                  focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                  transition-all duration-200">
+                                </div>
+                            </div>
+                        </template>
+
+                        {{-- Campos para GARAJE y TRASTERO (Solo número/letra) --}}
+                        <template x-if="tipo === 'garaje' || tipo === 'trastero'">
+                            <div class="col-span-2">
+                                <label class="block text-sm font-medium text-main mb-1.5">
+                                    Número/Identificador <span class="text-red-500">*</span>
+                                </label>
+                                <input type="text" 
+                                       name="piso"
+                                       placeholder="G1, G2, T1, T2, A, B, 1, 2..."
+                                       maxlength="10"
+                                       required
+                                       class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                                              focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                              transition-all duration-200">
+                                <p class="text-xs text-muted mt-1.5">
+                                    Ejemplo: G1, G2 (garajes) o T1, T2 (trasteros)
+                                </p>
+                                {{-- Hidden input for puerta (required by database) --}}
+                                <input type="hidden" name="puerta" value="-">
+                            </div>
+                        </template>
                     </div>
 
                     {{-- Submit Button --}}
