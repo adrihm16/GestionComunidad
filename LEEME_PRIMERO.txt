@@ -1,0 +1,124 @@
+═══════════════════════════════════════════════════════════════
+   🚀 PROYECTO GESTIONCOMUNIDAD - LEEME PRIMERO 🚀
+═══════════════════════════════════════════════════════════════
+
+¡Bienvenido al proyecto GestionComunidad!
+
+Este archivo te guiará para poner en marcha el proyecto rápidamente.
+
+═══════════════════════════════════════════════════════════════
+   📂 ARCHIVOS DE AYUDA DISPONIBLES
+═══════════════════════════════════════════════════════════════
+
+En la raíz del proyecto encontrarás estos archivos de ayuda:
+
+1. 📖 README.md
+   → Documentación completa del proyecto
+
+2. ⚡ INICIO_RAPIDO.md  ← ¡EMPIEZA POR AQUÍ!
+   → Guía rápida en 4 pasos
+
+3. 📚 GUIA_INSTALACION.md
+   → Guía detallada de instalación de PHP y Composer en Windows
+
+4. 🔍 verificar-entorno.ps1
+   → Script para verificar qué herramientas tienes instaladas
+
+5. ⚙️ setup-proyecto.ps1
+   → Script para configurar el proyecto automáticamente
+
+6. ▶️ iniciar-proyecto.ps1
+   → Script para iniciar el proyecto fácilmente
+
+═══════════════════════════════════════════════════════════════
+   🎯 ¿POR DÓNDE EMPIEZO?
+═══════════════════════════════════════════════════════════════
+
+Sigue estos pasos en orden:
+
+
+PASO 1: Verificar tu entorno
+────────────────────────────────
+Abre PowerShell en la carpeta del proyecto y ejecuta:
+
+    .\verificar-entorno.ps1
+
+Esto te mostrará qué tienes instalado y qué te falta.
+
+
+PASO 2: Instalar lo que falta
+────────────────────────────────
+El proyecto requiere:
+
+✓ Node.js (v18 o superior)
+✓ PHP 8.2 o superior
+✓ Composer
+
+Si te falta alguno, consulta la guía detallada:
+
+    GUIA_INSTALACION.md
+
+O si prefieres un resumen rápido:
+
+    INICIO_RAPIDO.md
+
+
+PASO 3: Configurar el proyecto
+────────────────────────────────
+Una vez que tengas PHP y Composer instalados, ejecuta:
+
+    .\setup-proyecto.ps1
+
+Este script hace TODA la configuración automáticamente:
+- Crea el archivo .env
+- Instala todas las dependencias
+- Configura la base de datos
+- Compila los assets
+
+
+PASO 4: Iniciar el proyecto
+────────────────────────────────
+Para ejecutar el proyecto:
+
+    .\iniciar-proyecto.ps1
+
+O directamente:
+
+    cd GestionComunidad\gestion-comunidad
+    composer dev
+
+Luego abre tu navegador en: http://localhost:8000
+
+
+═══════════════════════════════════════════════════════════════
+   📋 RESUMEN TÉCNICO
+═══════════════════════════════════════════════════════════════
+
+Tecnologías del proyecto:
+- Backend: Laravel 12 (PHP 8.2+)
+- Base de datos: SQLite (no requiere instalación adicional)
+- Frontend: Vite + Tailwind CSS + Alpine.js
+- Autenticación: Laravel Breeze
+
+═══════════════════════════════════════════════════════════════
+   🆘 ¿NECESITAS AYUDA?
+═══════════════════════════════════════════════════════════════
+
+Si tienes problemas:
+
+1. Ejecuta: verificar-entorno.ps1
+2. Lee: GUIA_INSTALACION.md (Sección "Solución de problemas")
+3. Revisa los logs: GestionComunidad/gestion-comunidad/storage/logs/
+
+═══════════════════════════════════════════════════════════════
+   ⏱️ TIEMPO ESTIMADO
+═══════════════════════════════════════════════════════════════
+
+- Si ya tienes PHP y Composer: 5-10 minutos
+- Si necesitas instalar todo: 20-30 minutos
+
+═══════════════════════════════════════════════════════════════
+
+¡Listo! Ahora puedes comenzar con el PASO 1 ⬆️
+
+¡Feliz desarrollo! 🎉
