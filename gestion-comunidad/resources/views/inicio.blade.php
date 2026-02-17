@@ -37,35 +37,45 @@
     {{-- ============================================= --}}
     <section>
         @include('components.ui.section-title', ['title' => 'Próxima reunión'])
-        @component('components.ui.card', ['hover' => true])
-            <div class="flex items-start gap-4">
-                {{-- Date badge --}}
-                <div class="flex flex-col items-center justify-center min-w-[52px] h-14 rounded-xl bg-primary/5 border border-primary/15">
-                    <span class="text-xl font-bold text-primary leading-none">28</span>
-                    <span class="text-xs font-medium text-primary uppercase leading-tight">Feb</span>
-                </div>
-                {{-- Meeting details --}}
-                <div class="flex-1">
-                    <p class="font-semibold text-sm text-main mb-0.5">Junta ordinaria de vecinos</p>
-                    <p class="text-xs text-muted mb-2">Revisión de presupuesto anual y aprobación de obras.</p>
-                    <div class="flex items-center gap-3 text-xs text-muted">
-                        <span class="flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            18:00h
-                        </span>
-                        <span class="flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-                            </svg>
-                            Salón comunal
-                        </span>
+        @if($proximaReunion)
+            @component('components.ui.card', ['hover' => true])
+                <div class="flex items-start gap-4">
+                    {{-- Date badge --}}
+                    <div class="flex flex-col items-center justify-center min-w-[52px] h-14 rounded-xl bg-primary/5 border border-primary/15">
+                        <span class="text-xl font-bold text-primary leading-none">{{ $proximaReunion->fecha_inicio->format('d') }}</span>
+                        <span class="text-xs font-medium text-primary uppercase leading-tight">{{ $proximaReunion->fecha_inicio->translatedFormat('M') }}</span>
+                    </div>
+                    {{-- Event details --}}
+                    <div class="flex-1">
+                        <p class="font-semibold text-sm text-main mb-0.5">{{ $proximaReunion->titulo }}</p>
+                        <p class="text-xs text-muted mb-2 line-clamp-2">{{ Str::limit($proximaReunion->descripcion, 100) }}</p>
+                        <div class="flex items-center gap-3 text-xs text-muted">
+                            <span class="flex items-center gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                {{ $proximaReunion->fecha_inicio->format('H:i') }}h
+                            </span>
+                            @php
+                                $tipoBadge = match($proximaReunion->tipo) {
+                                    'junta' => 'bg-primary/10 text-primary',
+                                    'mantenimiento' => 'bg-amber-100 text-amber-700',
+                                    'obra' => 'bg-orange-100 text-orange-700',
+                                    default => 'bg-gray-100 text-gray-600',
+                                };
+                            @endphp
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-lg text-[10px] font-medium {{ $tipoBadge }}">
+                                {{ ucfirst($proximaReunion->tipo) }}
+                            </span>
+                        </div>
                     </div>
                 </div>
-            </div>
-        @endcomponent
+            @endcomponent
+        @else
+            @component('components.ui.card', ['hover' => false, 'bodyClass' => 'p-3'])
+                <p class="text-sm text-muted text-center">No hay eventos programados 📅</p>
+            @endcomponent
+        @endif
     </section>
 
     {{-- ============================================= --}}
