@@ -150,6 +150,20 @@ class UserController extends Controller
             'puerta' => ['required', 'string', 'max:10'],
         ]);
 
+        // Verificar si el inmueble ya existe
+        $existingInmueble = Inmueble::where('tipo', $validated['tipo'])
+            ->where('bloque', $validated['bloque'])
+            ->where('piso', $validated['piso'])
+            ->where('puerta', $validated['puerta'])
+            ->first();
+
+        if ($existingInmueble) {
+            return redirect()->route('admin.users.edit', $user)
+                ->with('error', 'Este inmueble ya existe y está asignado a ' . 
+                       $existingInmueble->propietario->nombre . ' ' . 
+                       $existingInmueble->propietario->apellidos . '.');
+        }
+
         $validated['propietario_id'] = $user->id;
         Inmueble::create($validated);
 

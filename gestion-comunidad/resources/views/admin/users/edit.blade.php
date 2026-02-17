@@ -323,6 +323,8 @@
                       action="{{ route('admin.users.inmuebles.store', $user) }}"
                       x-show="open"
                       x-transition
+                      x-data="{ submitting: false }"
+                      @submit="submitting = true"
                       class="mt-4 flex flex-col gap-4">
                     @csrf
 
@@ -413,13 +415,15 @@
                     {{-- Submit Button --}}
                     <div class="flex justify-end">
                         <button type="submit" 
+                                :disabled="submitting"
+                                :class="submitting ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95'"
                                 class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl 
                                        bg-emerald-600 text-white text-sm font-medium shadow-md
-                                       transition-all duration-200 hover:scale-105 active:scale-95">
+                                       transition-all duration-200">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                             </svg>
-                            Guardar Inmueble
+                            <span x-text="submitting ? 'Guardando...' : 'Guardar Inmueble'"></span>
                         </button>
                     </div>
                 </form>
