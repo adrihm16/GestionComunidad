@@ -33,7 +33,7 @@
                         opacity-0 translate-y-1 transition-all duration-200">
 
                 {{-- Profile link --}}
-                <a href="{{ url('/profile') }}"
+                <a href="{{ route('profile.edit') }}"
                    class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-main
                           hover:bg-primary/5 hover:text-primary transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

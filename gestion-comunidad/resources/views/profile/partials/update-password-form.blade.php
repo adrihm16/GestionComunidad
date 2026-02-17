@@ -1,48 +1,83 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Update Password') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p>
-    </header>
-
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+@component('components.ui.card', ['hover' => false])
+    <form method="POST" action="{{ route('password.update') }}" class="flex flex-col gap-4">
         @csrf
-        @method('put')
+        @method('PUT')
 
+        <p class="text-sm text-muted mb-2">
+            Asegúrate de usar una contraseña larga y aleatoria para mantener tu cuenta segura.
+        </p>
+
+        {{-- Contraseña actual --}}
         <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+            <label class="block text-sm font-medium text-main mb-1.5">Contraseña actual</label>
+            <input type="password" 
+                   name="current_password"
+                   required
+                   autocomplete="current-password"
+                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                          transition-all duration-200">
+            @error('current_password', 'updatePassword')
+                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
+        {{-- Nueva contraseña --}}
         <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+            <label class="block text-sm font-medium text-main mb-1.5">Nueva contraseña</label>
+            <input type="password" 
+                   name="password"
+                   required
+                   autocomplete="new-password"
+                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                          transition-all duration-200">
+            @error('password', 'updatePassword')
+                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+            @enderror
+            <p class="text-xs text-muted mt-1.5">Mínimo 8 caracteres</p>
         </div>
 
+        {{-- Confirmar contraseña --}}
         <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+            <label class="block text-sm font-medium text-main mb-1.5">Confirmar contraseña</label>
+            <input type="password" 
+                   name="password_confirmation"
+                   required
+                   autocomplete="new-password"
+                   class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                          transition-all duration-200">
+            @error('password_confirmation', 'updatePassword')
+                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+            @enderror
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
-
+        {{-- Botones de acción --}}
+        <div class="flex items-center justify-between pt-2">
             @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                <div x-data="{ show: true }" 
+                     x-show="show" 
+                     x-init="setTimeout(() => show = false, 3000)"
+                     class="flex items-center gap-2 text-sm text-emerald-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span class="font-medium">Contraseña actualizada</span>
+                </div>
+            @else
+                <div></div>
             @endif
+
+            <button type="submit" 
+                    class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl 
+                           bg-primary text-white text-sm font-medium shadow-md
+                           transition-all duration-200 hover:scale-105 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+                </svg>
+                Actualizar contraseña
+            </button>
         </div>
     </form>
-</section>
+@endcomponent
