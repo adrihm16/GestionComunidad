@@ -97,7 +97,12 @@ Route::middleware('auth')->group(function () {
             ->take(3)
             ->get();
 
-        return view('inicio', compact('ultimasNoticias', 'calendarData', 'ultimasIncidencias'));
+        $proximaReunion = \App\Models\Evento::where('fecha_inicio', '>=', now())
+            ->where('tipo', 'junta')
+            ->orderBy('fecha_inicio', 'asc')
+            ->first();
+
+        return view('inicio', compact('ultimasNoticias', 'calendarData', 'ultimasIncidencias', 'proximaReunion'));
     })->name('inicio');
 
     // Calendar API (AJAX month navigation)
