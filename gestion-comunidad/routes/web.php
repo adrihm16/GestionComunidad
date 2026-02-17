@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
 
     // Vecinos list
     Route::get('/vecinos', [VecinoController::class, 'index'])->name('vecinos.index');
+    Route::get('/vecinos/{user}', [VecinoController::class, 'show'])->name('vecinos.show');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
