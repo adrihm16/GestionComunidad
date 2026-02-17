@@ -11,7 +11,15 @@ class IncidenciaController extends Controller
 {
     public function index()
     {
-        $incidencias = Incidencia::with('creador')->orderBy('fecha_creacion', 'desc')->paginate(10);
+        $incidencias = Incidencia::with('creador')
+            ->orderByRaw("CASE estado
+                WHEN 'pendiente' THEN 1
+                WHEN 'en_proceso' THEN 2
+                WHEN 'resuelta' THEN 3
+                WHEN 'rechazada' THEN 4
+                ELSE 5 END")
+            ->orderBy('fecha_creacion', 'desc')
+            ->paginate(10);
         return view('incidencias.index', compact('incidencias'));
     }
 

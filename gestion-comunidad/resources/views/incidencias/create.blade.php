@@ -83,9 +83,9 @@
                            @error('prioridad') border-red-400 ring-2 ring-red-100 @enderror"
                 >
                     <option value="" disabled {{ old('prioridad') ? '' : 'selected' }}>Selecciona la prioridad</option>
-                    <option value="baja" {{ old('prioridad') === 'baja' ? 'selected' : '' }}>🟢 Baja</option>
-                    <option value="media" {{ old('prioridad') === 'media' ? 'selected' : '' }}>🟡 Media</option>
-                    <option value="alta" {{ old('prioridad') === 'alta' ? 'selected' : '' }}>🔴 Alta</option>
+                    <option value="baja" {{ old('prioridad') === 'baja' ? 'selected' : '' }}>Baja</option>
+                    <option value="media" {{ old('prioridad') === 'media' ? 'selected' : '' }}>Media</option>
+                    <option value="alta" {{ old('prioridad') === 'alta' ? 'selected' : '' }}>Alta</option>
                 </select>
                 @error('prioridad')
                     <p class="text-xs text-red-500 mt-0.5">{{ $message }}</p>
