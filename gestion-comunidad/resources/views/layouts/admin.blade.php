@@ -30,6 +30,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -48,10 +49,34 @@
                 },
             },
         }
+
+        // Initialize dark mode before Alpine starts (flicker prevention)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Global Theme Store
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('theme', {
+                darkMode: document.documentElement.classList.contains('dark'),
+                toggle() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                }
+            })
+        })
     </script>
 </head>
 
-<body class="bg-page font-poppins text-main min-h-screen flex flex-col"
+<body class="bg-page dark:bg-[#071309] font-poppins text-main dark:text-gray-100 min-h-screen flex flex-col"
     x-data="{ sidebarOpen: window.innerWidth > 768 }" x-cloak>
 
     {{-- Header --}}

@@ -15,9 +15,9 @@
             @forelse ($ultimasNoticias as $noticia)
                 <a href="{{ route('noticias.show', $noticia) }}" class="block">
                     @component('components.ui.card', ['hover' => true, 'bodyClass' => 'p-3'])
-                        <p class="font-semibold text-sm text-main leading-snug mb-1">{{ $noticia->titulo }}</p>
-                        <p class="text-xs text-muted line-clamp-2">{{ Str::limit($noticia->contenido, 80) }}</p>
-                        <p class="text-xs text-muted mt-2 flex items-center gap-1">
+                        <p class="font-semibold text-sm text-main dark:text-gray-100 leading-snug mb-1">{{ $noticia->titulo }}</p>
+                        <p class="text-xs text-muted dark:text-emerald-500/60 line-clamp-2">{{ Str::limit($noticia->contenido, 80) }}</p>
+                        <p class="text-xs text-muted dark:text-emerald-500/40 mt-2 flex items-center gap-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
                             </svg>
@@ -41,15 +41,15 @@
             @component('components.ui.card', ['hover' => true])
                 <div class="flex items-start gap-4">
                     {{-- Date badge --}}
-                    <div class="flex flex-col items-center justify-center min-w-[52px] h-14 rounded-xl bg-primary/5 border border-primary/15">
-                        <span class="text-xl font-bold text-primary leading-none">{{ $proximaReunion->fecha_inicio->format('d') }}</span>
-                        <span class="text-xs font-medium text-primary uppercase leading-tight">{{ $proximaReunion->fecha_inicio->translatedFormat('M') }}</span>
+                    <div class="flex flex-col items-center justify-center min-w-[52px] h-14 rounded-xl bg-primary/5 dark:bg-primary/20 border border-primary/15 dark:border-primary/30">
+                        <span class="text-xl font-bold text-primary dark:text-accent leading-none">{{ $proximaReunion->fecha_inicio->format('d') }}</span>
+                        <span class="text-xs font-medium text-primary dark:text-accent uppercase leading-tight">{{ $proximaReunion->fecha_inicio->translatedFormat('M') }}</span>
                     </div>
                     {{-- Event details --}}
                     <div class="flex-1">
-                        <p class="font-semibold text-sm text-main mb-0.5">{{ $proximaReunion->titulo }}</p>
-                        <p class="text-xs text-muted mb-2 line-clamp-2">{{ Str::limit($proximaReunion->descripcion, 100) }}</p>
-                        <div class="flex items-center gap-3 text-xs text-muted">
+                        <p class="font-semibold text-sm text-main dark:text-gray-100 mb-0.5">{{ $proximaReunion->titulo }}</p>
+                        <p class="text-xs text-muted dark:text-emerald-500/60 mb-2 line-clamp-2">{{ Str::limit($proximaReunion->descripcion, 100) }}</p>
+                        <div class="flex items-center gap-3 text-xs text-muted dark:text-emerald-500/40">
                             <span class="flex items-center gap-1">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -87,23 +87,23 @@
             {{-- Receipt row 1 --}}
             <div class="flex items-center justify-between py-2">
                 <div class="flex items-center gap-3">
-                    <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/5">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <div class="flex items-center justify-center w-9 h-9 rounded-lg bg-primary/5 dark:bg-primary/20">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary dark:text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 14.25l6-6m4.5-3.493V21.75l-3.75-1.5-3.75 1.5-3.75-1.5-3.75 1.5V4.757c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0c1.1.128 1.907 1.077 1.907 2.185z" />
                         </svg>
                     </div>
                     <div>
-                        <p class="font-medium text-sm text-main">Febrero 2026</p>
-                        <p class="text-xs text-muted">Cuota comunidad</p>
+                        <p class="font-medium text-sm text-main dark:text-gray-100">Febrero 2026</p>
+                        <p class="text-xs text-muted dark:text-emerald-500/60">Cuota comunidad</p>
                     </div>
                 </div>
                 <div class="text-right">
-                    <p class="font-semibold text-sm text-main">85,00 €</p>
+                    <p class="font-semibold text-sm text-main dark:text-gray-100">85,00 €</p>
                     @include('components.ui.badge', ['text' => 'Pagado', 'variant' => 'success'])
                 </div>
             </div>
             {{-- Divider --}}
-            <div class="border-t border-gray-100"></div>
+            <div class="border-t border-gray-100 dark:border-emerald-900/20"></div>
             {{-- Receipt row 2 --}}
             <div class="flex items-center justify-between py-2">
                 <div class="flex items-center gap-3">
@@ -151,8 +151,8 @@
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="font-medium text-sm text-main truncate">{{ $incidencia->titulo }}</p>
-                            <p class="text-xs text-muted">{{ $incidencia->fecha_creacion->format('d M Y') }}</p>
+                            <p class="font-medium text-sm text-main dark:text-gray-100 truncate">{{ $incidencia->titulo }}</p>
+                            <p class="text-xs text-muted dark:text-emerald-500/60">{{ $incidencia->fecha_creacion->format('d M Y') }}</p>
                         </div>
                         @php
                             $estadoBadge = match($incidencia->estado) {

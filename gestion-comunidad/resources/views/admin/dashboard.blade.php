@@ -10,7 +10,7 @@
 
     {{-- Flash messages --}}
     @if(session('success'))
-        <div class="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700">
+        <div class="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-100 dark:border-emerald-900/30 text-emerald-700 dark:text-emerald-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
@@ -18,7 +18,7 @@
         </div>
     @endif
     @if(session('error'))
-        <div class="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700">
+        <div class="flex items-center gap-3 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 text-red-700 dark:text-red-400">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
             </svg>
@@ -34,13 +34,13 @@
         {{-- Section header --}}
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-purple-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                     </svg>
                 </div>
-                <h2 class="font-poppins font-semibold text-base text-main">Gestión de Usuarios</h2>
-                <span class="text-xs text-muted bg-gray-100 px-2 py-0.5 rounded-full">{{ $users->total() }}</span>
+                <h2 class="font-poppins font-semibold text-base text-main dark:text-gray-100">Gestión de Usuarios</h2>
+                <span class="text-xs text-muted dark:text-gray-400 bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded-full">{{ $users->total() }}</span>
             </div>
             <a href="{{ route('admin.users.create') }}"
                class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium shadow-md
@@ -58,11 +58,11 @@
                 <div class="flex-1">
                     <input type="text" name="search" value="{{ request('search') }}"
                            placeholder="Buscar por nombre, apellidos o email..."
-                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                           class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-main dark:text-gray-100
                                   focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200">
                 </div>
                 <div>
-                    <select name="rol" class="w-full md:w-40 px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
+                    <select name="rol" class="w-full md:w-40 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-main dark:text-gray-100
                                               focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200">
                         <option value="">Todos los roles</option>
                         <option value="admin" {{ request('rol') === 'admin' ? 'selected' : '' }}>Admin</option>
@@ -74,8 +74,8 @@
                     Filtrar
                 </button>
                 @if(request('search') || request('rol'))
-                    <a href="{{ route('admin.dashboard') }}" class="px-4 py-2.5 rounded-xl bg-gray-100 text-main text-sm font-medium
-                                                                     transition-all duration-200 hover:bg-gray-200">
+                    <a href="{{ route('admin.dashboard') }}" class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-main dark:text-gray-300 text-sm font-medium
+                                                                     transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
                         Limpiar
                     </a>
                 @endif
@@ -93,16 +93,16 @@
                             </svg>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <p class="font-poppins font-semibold text-sm text-main truncate">{{ $user->nombre }} {{ $user->apellidos }}</p>
-                            <p class="text-xs text-muted truncate">{{ $user->email }}</p>
+                            <p class="font-poppins font-semibold text-sm text-main dark:text-gray-100 truncate">{{ $user->nombre }} {{ $user->apellidos }}</p>
+                            <p class="text-xs text-muted dark:text-gray-400 truncate">{{ $user->email }}</p>
                         </div>
                         {{-- Badges Container (Fixed width for alignment) --}}
                         <div class="hidden sm:flex items-center justify-end w-24 flex-shrink-0">
                             @php
                                 $rolBadge = match($user->rol_sistema) {
-                                    'admin' => 'bg-purple-100 text-purple-700',
-                                    'vecino' => 'bg-blue-100 text-blue-700',
-                                    default => 'bg-gray-100 text-gray-600',
+                                    'admin' => 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300',
+                                    'vecino' => 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300',
+                                    default => 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
                                 };
                             @endphp
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider {{ $rolBadge }}">
@@ -137,7 +137,7 @@
                 @endcomponent
             @empty
                 <div class="flex flex-col items-center justify-center py-10 text-center">
-                    <p class="text-sm text-muted">No se encontraron usuarios</p>
+                    <p class="text-sm text-muted dark:text-gray-400">No se encontraron usuarios</p>
                 </div>
             @endforelse
         </div>
@@ -159,13 +159,13 @@
         {{-- Section header --}}
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-950/40">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-emerald-600 dark:text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
                     </svg>
                 </div>
-                <h2 class="font-poppins font-semibold text-base text-main">Gestión de Noticias</h2>
-                <span class="text-xs text-muted bg-gray-100 px-2 py-0.5 rounded-full">{{ $noticias->count() }}</span>
+                <h2 class="font-poppins font-semibold text-base text-main dark:text-gray-100">Gestión de Noticias</h2>
+                <span class="text-xs text-muted dark:text-emerald-500/60 bg-gray-100 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">{{ $noticias->count() }}</span>
             </div>
             <button type="button" @click="openForm('create')"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium shadow-md
@@ -181,7 +181,7 @@
  
         {{-- ── Inline view-all link ── --}}
         <div class="flex justify-end -mt-2">
-            <a href="{{ route('admin.noticias.index') }}" class="text-xs text-primary font-medium hover:underline flex items-center gap-1">
+            <a href="{{ route('admin.noticias.index') }}" class="text-xs text-primary dark:text-accent font-medium hover:underline flex items-center gap-1">
                 Ver todas las noticias
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -201,10 +201,10 @@
             @component('components.ui.card', ['hover' => false])
                 {{-- Form title --}}
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-poppins font-semibold text-sm text-main"
+                    <h3 class="font-poppins font-semibold text-sm text-main dark:text-gray-100"
                         x-text="formMode === 'create' ? 'Nueva noticia' : 'Editar noticia'"></h3>
                     <button type="button" @click="closeForm()"
-                            class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-muted">
+                            class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-900/30 transition-colors duration-200 text-muted dark:text-emerald-500/60">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -216,24 +216,24 @@
                       enctype="multipart/form-data" class="flex flex-col gap-4">
                     @csrf
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-medium text-main">Título <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-medium text-main dark:text-gray-300">Título <span class="text-red-500">*</span></label>
                         <input type="text" name="titulo" value="{{ old('titulo') }}" required maxlength="150"
                                placeholder="Título de la noticia..."
-                               class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm text-main
+                               class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100
                                       focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200
-                                      @error('titulo') border-red-400 @enderror">
+                                      @error('titulo') border-red-400 @enderror dark:placeholder-emerald-500/30">
                         @error('titulo')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-medium text-main">Contenido <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-medium text-main dark:text-gray-300">Contenido <span class="text-red-500">*</span></label>
                         <textarea name="contenido" rows="5" required placeholder="Contenido de la noticia..."
-                                  class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm text-main resize-none
+                                  class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100 resize-none
                                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200
-                                         @error('contenido') border-red-400 @enderror">{{ old('contenido') }}</textarea>
+                                         @error('contenido') border-red-400 @enderror dark:placeholder-emerald-500/30">{{ old('contenido') }}</textarea>
                         @error('contenido')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-medium text-main">Imagen <span class="text-xs text-muted font-normal">(opcional · JPG, PNG, WebP · máx. 2MB)</span></label>
+                        <label class="text-xs font-medium text-main dark:text-gray-300">Imagen <span class="text-xs text-muted dark:text-emerald-500/60 font-normal">(opcional · JPG, PNG, WebP · máx. 2MB)</span></label>
                         <input type="file" name="imagen" accept="image/*"
                                class="w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0
                                       file:text-xs file:font-medium file:bg-primary/10 file:text-primary
@@ -247,7 +247,7 @@
                             Publicar noticia
                         </button>
                         <button type="button" @click="closeForm()"
-                                class="px-4 py-2.5 rounded-xl bg-gray-100 text-main text-sm font-medium
+                                class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-emerald-900/20 text-main dark:text-gray-300 text-sm font-medium
                                        transition-all duration-200 hover:bg-gray-200">
                             Cancelar
                         </button>
@@ -262,25 +262,25 @@
                         @csrf
                         @method('PUT')
                         <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-medium text-main">Título <span class="text-red-500">*</span></label>
+                            <label class="text-xs font-medium text-main dark:text-gray-300">Título <span class="text-red-500">*</span></label>
                             <input type="text" name="titulo" value="{{ old('titulo', $noticia->titulo) }}" required maxlength="150"
-                                   class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm text-main
+                                   class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100
                                           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200">
                         </div>
                         <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-medium text-main">Contenido <span class="text-red-500">*</span></label>
+                            <label class="text-xs font-medium text-main dark:text-gray-300">Contenido <span class="text-red-500">*</span></label>
                             <textarea name="contenido" rows="5" required
-                                      class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm text-main resize-none
+                                      class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100 resize-none
                                              focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200">{{ old('contenido', $noticia->contenido) }}</textarea>
                         </div>
                         @if($noticia->adjunto_url)
-                            <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 border border-gray-100">
+                            <div class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-emerald-900/20 border border-gray-100 dark:border-emerald-900/40">
                                 <img src="{{ $noticia->adjunto_url }}" alt="Imagen actual" class="w-12 h-12 object-cover rounded-lg">
-                                <p class="text-xs text-muted">Imagen actual. Sube una nueva para reemplazarla.</p>
+                                <p class="text-xs text-muted dark:text-emerald-500/60">Imagen actual. Sube una nueva para reemplazarla.</p>
                             </div>
                         @endif
                         <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-medium text-main">{{ $noticia->adjunto_url ? 'Nueva imagen' : 'Imagen' }} <span class="text-xs text-muted font-normal">(opcional)</span></label>
+                            <label class="text-xs font-medium text-main dark:text-gray-300">{{ $noticia->adjunto_url ? 'Nueva imagen' : 'Imagen' }} <span class="text-xs text-muted dark:text-emerald-500/60 font-normal">(opcional)</span></label>
                             <input type="file" name="imagen" accept="image/*"
                                    class="w-full text-sm text-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0
                                           file:text-xs file:font-medium file:bg-primary/10 file:text-primary
@@ -293,7 +293,7 @@
                                 Guardar cambios
                             </button>
                             <button type="button" @click="closeForm()"
-                                    class="px-4 py-2.5 rounded-xl bg-gray-100 text-main text-sm font-medium
+                                    class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-emerald-900/20 text-main dark:text-gray-300 text-sm font-medium
                                            transition-all duration-200 hover:bg-gray-200">
                                 Cancelar
                             </button>
@@ -322,8 +322,8 @@
                         </div>
                         {{-- Info --}}
                         <div class="flex-1 min-w-0">
-                            <p class="font-poppins font-semibold text-sm text-main truncate">{{ $noticia->titulo }}</p>
-                            <p class="text-xs text-muted">{{ $noticia->fecha_publicacion->format('d M Y') }}</p>
+                            <p class="font-poppins font-semibold text-sm text-main dark:text-gray-200 truncate">{{ $noticia->titulo }}</p>
+                            <p class="text-xs text-muted dark:text-gray-400">{{ $noticia->fecha_publicacion->format('d M Y') }}</p>
                         </div>
                     </div>
                     {{-- Actions --}}
@@ -355,8 +355,8 @@
                 @endcomponent
             @empty
                 <div class="flex flex-col items-center justify-center py-10 text-center">
-                    <p class="text-sm text-muted">No hay noticias publicadas aún</p>
-                    <button type="button" @click="openForm('create')" class="mt-2 text-sm text-primary font-medium hover:underline">
+                    <p class="text-sm text-muted dark:text-emerald-500/60">No hay noticias publicadas aún</p>
+                    <button type="button" @click="openForm('create')" class="mt-2 text-sm text-primary dark:text-accent font-medium hover:underline">
                         Publicar la primera →
                     </button>
                 </div>
@@ -375,13 +375,13 @@
         {{-- Section header --}}
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
-                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100 dark:bg-red-950/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                     </svg>
                 </div>
-                <h2 class="font-poppins font-semibold text-base text-main">Gestión de Incidencias</h2>
-                <span class="text-xs text-muted bg-gray-100 px-2 py-0.5 rounded-full">{{ $incidencias->count() }}</span>
+                <h2 class="font-poppins font-semibold text-base text-main dark:text-gray-100">Gestión de Incidencias</h2>
+                <span class="text-xs text-muted dark:text-emerald-500/60 bg-gray-100 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">{{ $incidencias->count() }}</span>
             </div>
             <button type="button" @click="openIncidenciaForm()"
                     class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium shadow-md
@@ -397,7 +397,7 @@
 
         {{-- ── Inline view-all link (for reference) ── --}}
         <div class="flex justify-end -mt-2">
-            <a href="{{ route('admin.incidencias.index') }}" class="text-xs text-primary font-medium hover:underline flex items-center gap-1">
+            <a href="{{ route('admin.incidencias.index') }}" class="text-xs text-primary dark:text-accent font-medium hover:underline flex items-center gap-1">
                 Ver todas las incidencias
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -416,9 +416,9 @@
              style="display:none;">
             @component('components.ui.card', ['hover' => false])
                 <div class="flex items-center justify-between mb-4">
-                    <h3 class="font-poppins font-semibold text-sm text-main">Reportar Nueva Incidencia (Admin)</h3>
+                    <h3 class="font-poppins font-semibold text-sm text-main dark:text-gray-100">Reportar Nueva Incidencia (Admin)</h3>
                     <button type="button" @click="incidenciaFormOpen = false"
-                            class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-muted">
+                            class="p-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-900/30 transition-colors duration-200 text-muted dark:text-emerald-500/60">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -428,34 +428,34 @@
                 <form action="{{ route('admin.incidencias.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
                     @csrf
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-medium text-main">Título <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-medium text-main dark:text-gray-300">Título <span class="text-red-500">*</span></label>
                         <input type="text" name="titulo" required maxlength="100" placeholder="Ej: Fuga de agua en el garaje"
-                               class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-primary/30 outline-none">
+                               class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100 focus:ring-2 focus:ring-primary/30 outline-none dark:placeholder-emerald-500/30">
                     </div>
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-xs font-medium text-main">Descripción <span class="text-red-500">*</span></label>
+                        <label class="text-xs font-medium text-main dark:text-gray-300">Descripción <span class="text-red-500">*</span></label>
                         <textarea name="descripcion" rows="3" required placeholder="Describe el problema..."
-                                  class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-primary/30 outline-none resize-none"></textarea>
+                                  class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100 focus:ring-2 focus:ring-primary/30 outline-none resize-none dark:placeholder-emerald-500/30"></textarea>
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-medium text-main">Prioridad <span class="text-red-500">*</span></label>
-                            <select name="prioridad" required class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm outline-none">
+                            <label class="text-xs font-medium text-main dark:text-gray-300">Prioridad <span class="text-red-500">*</span></label>
+                            <select name="prioridad" required class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-emerald-900/40 bg-white dark:bg-emerald-950/20 text-sm text-main dark:text-gray-100 outline-none">
                                 <option value="baja">Baja</option>
                                 <option value="media" selected>Media</option>
                                 <option value="alta">Alta</option>
                             </select>
                         </div>
                         <div class="flex flex-col gap-1.5">
-                            <label class="text-xs font-medium text-main">Foto <span class="text-xs text-muted font-normal">(opcional)</span></label>
-                            <input type="file" name="foto" accept="image/*" class="text-xs">
+                            <label class="text-xs font-medium text-main dark:text-gray-300">Foto <span class="text-xs text-muted dark:text-gray-400 font-normal">(opcional)</span></label>
+                            <input type="file" name="foto" accept="image/*" class="text-xs dark:text-gray-400">
                         </div>
                     </div>
                     <div class="flex gap-3 pt-1">
                         <button type="submit" class="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-md active:scale-95 transition-all">
                             Reportar incidencia
                         </button>
-                        <button type="button" @click="incidenciaFormOpen = false" class="px-4 py-2.5 rounded-xl bg-gray-100 text-main text-sm font-medium hover:bg-gray-200 transition-all">
+                        <button type="button" @click="incidenciaFormOpen = false" class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-emerald-900/20 text-main dark:text-gray-300 text-sm font-medium hover:bg-gray-200 transition-all">
                             Cancelar
                         </button>
                     </div>
@@ -481,8 +481,8 @@
                         
                         {{-- Info --}}
                         <div class="flex-1 min-w-0">
-                            <p class="font-poppins font-semibold text-sm text-main truncate">{{ $incidencia->titulo }}</p>
-                            <p class="text-xs text-muted truncate">Por {{ $incidencia->creador->nombre }} · {{ ucfirst($incidencia->estado) }}</p>
+                            <p class="font-poppins font-semibold text-sm text-main dark:text-gray-200 truncate">{{ $incidencia->titulo }}</p>
+                            <p class="text-xs text-muted dark:text-gray-400 truncate">Por {{ $incidencia->creador->nombre }} · {{ ucfirst($incidencia->estado) }}</p>
                         </div>
                     </div>
                     {{-- Actions --}}
@@ -508,8 +508,8 @@
                 @endcomponent
             @empty
                 <div class="flex flex-col items-center justify-center py-10 text-center">
-                    <p class="text-sm text-muted">No hay incidencias reportadas aún</p>
-                    <button type="button" @click="openIncidenciaForm()" class="mt-2 text-sm text-primary font-medium hover:underline">
+                    <p class="text-sm text-muted dark:text-gray-400">No hay hay incidencias reportadas aún</p>
+                    <button type="button" @click="openIncidenciaForm()" class="mt-2 text-sm text-primary dark:text-accent font-medium hover:underline">
                         Crear la primera →
                     </button>
                 </div>

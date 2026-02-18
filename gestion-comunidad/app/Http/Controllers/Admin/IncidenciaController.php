@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Incidencia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class IncidenciaController extends Controller
 {
@@ -32,7 +33,7 @@ class IncidenciaController extends Controller
         }
 
         Incidencia::create([
-            'creador_id' => auth()->id(),
+            'creador_id' => Auth::id(),
             'titulo' => $validated['titulo'],
             'descripcion' => $validated['descripcion'],
             'prioridad' => $validated['prioridad'],

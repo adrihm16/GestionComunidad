@@ -45,14 +45,15 @@
 
                     {{-- Info --}}
                     <div class="flex-1 min-w-0">
-                        <p class="font-poppins font-semibold text-base text-main truncate">
+                        <p class="font-poppins font-semibold text-base text-main dark:text-gray-100 truncate">
                             {{ $incidencia->titulo }}
                         </p>
                         <div class="flex items-center gap-2 mt-0.5">
-                            <span class="text-xs text-muted">
+                            <span class="text-xs text-muted dark:text-gray-400">
                                 Reportada por {{ $incidencia->creador->nombre }} {{ $incidencia->creador->apellidos }}
                             </span>
-                            <span class="text-xs text-muted px-1.5 py-0.5 bg-gray-100 rounded-md">
+                            <span
+                                class="text-xs text-muted dark:text-emerald-500/60 px-1.5 py-0.5 bg-gray-100 dark:bg-emerald-900/30 rounded-md">
                                 {{ ucfirst($incidencia->prioridad) }}
                             </span>
                         </div>
@@ -61,9 +62,9 @@
 
                 {{-- Actions --}}
                 <div
-                    class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0">
+                    class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 dark:border-emerald-900/40 pt-3 sm:pt-0">
                     <a href="{{ route('incidencias.show', $incidencia) }}"
-                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-semibold transition-colors hover:bg-primary hover:text-white"
+                        class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent text-xs font-semibold transition-colors hover:bg-primary hover:text-white"
                         title="Ver y Gestionar">
                         Ver Detalles
                     </a>
@@ -85,14 +86,15 @@
                 @endcomponent
             @empty
                 <div class="flex flex-col items-center justify-center py-16 text-center">
-                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 mb-4">
+                    <div
+                        class="flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 dark:bg-emerald-950/30 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary/40" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
                         </svg>
                     </div>
-                    <p class="font-medium text-sm text-muted">No hay incidencias reportadas</p>
+                    <p class="font-medium text-sm text-muted dark:text-gray-400">No hay incidencias reportadas</p>
                 </div>
             @endforelse
         </div>

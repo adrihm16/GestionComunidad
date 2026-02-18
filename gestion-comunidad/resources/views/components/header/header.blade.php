@@ -1,5 +1,5 @@
 {{-- App Header - Eco-Tech Community Manager --}}
-<header class="sticky top-0 z-50 w-full bg-white border-b border-gray-100"
+<header class="sticky top-0 z-50 w-full bg-white dark:bg-[#0f1f12] border-b border-gray-100 dark:border-emerald-900/30"
     style="box-shadow: 0 1px 8px rgba(0,0,0,0.06);">
     <div class="flex items-center justify-between px-5 py-3 max-w-screen-xl mx-auto">
 
@@ -8,32 +8,36 @@
             <button type="button" id="user-dropdown-btn" class="flex items-center gap-3 group focus:outline-none"
                 aria-label="Menú de usuario" aria-expanded="false">
                 {{-- Avatar circle with user icon --}}
-                <div class="relative flex items-center justify-center w-10 h-10 rounded-full border-2 border-main
-                            transition-all duration-300 group-hover:border-primary group-hover:shadow-md">
+                <div
+                    class="relative flex items-center justify-center w-10 h-10 rounded-full border-2 border-main dark:border-gray-100
+                            transition-all duration-300 group-hover:border-primary dark:group-hover:border-accent group-hover:shadow-md">
                     <svg xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 text-main transition-colors duration-300 group-hover:text-primary" fill="none"
-                        viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        class="w-5 h-5 text-main dark:text-gray-100 transition-colors duration-300 group-hover:text-primary dark:group-hover:text-accent"
+                        fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
                     </svg>
                 </div>
-                <span class="text-main font-medium text-base transition-colors duration-300 group-hover:text-primary">
+                <span
+                    class="text-main dark:text-gray-100 font-medium text-base transition-colors duration-300 group-hover:text-primary dark:group-hover:text-accent">
                     {{ Auth::check() ? Auth::user()->nombre : 'Usuario' }}
                 </span>
                 {{-- Chevron --}}
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-muted transition-transform duration-200"
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4 text-muted dark:text-gray-400 transition-transform duration-200"
                     id="user-dropdown-chevron" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
                 </svg>
             </button>
 
             {{-- Dropdown menu --}}
-            <div id="user-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-52 bg-white rounded-xl shadow-lg border border-gray-100 overflow-hidden z-50
+            <div id="user-dropdown-menu" class="hidden absolute left-0 top-full mt-2 w-52 bg-white dark:bg-[#162D1B] rounded-xl shadow-lg border border-gray-100 dark:border-emerald-900/40 overflow-hidden z-50
                         opacity-0 translate-y-1 transition-all duration-200">
 
                 {{-- Profile link --}}
-                <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-main
-                          hover:bg-primary/5 hover:text-primary transition-colors duration-200">
+                <a href="{{ route('profile.edit') }}"
+                    class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-main dark:text-gray-100
+                          hover:bg-primary/5 dark:hover:bg-emerald-900/30 hover:text-primary dark:hover:text-accent transition-colors duration-200">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"
@@ -44,8 +48,9 @@
 
                 {{-- Admin Panel (only for admin users) --}}
                 @if(Auth::check() && Auth::user()->rol_sistema === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-purple-600
-                                               hover:bg-purple-50 transition-colors duration-200">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-purple-600
+                                                                               hover:bg-purple-50 transition-colors duration-200">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -57,11 +62,12 @@
                 @endif
 
                 {{-- Back to Home (for admins or deep pages) --}}
-                <a href="{{ route('inicio') }}"
-                   class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-muted
+                <a href="{{ route('inicio') }}" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-muted
                           hover:bg-primary/5 hover:text-main transition-colors duration-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                     </svg>
                     Volver al Inicio
                 </a>
@@ -87,6 +93,24 @@
 
         {{-- Right: Action icons --}}
         <nav class="flex items-center gap-4" id="header-nav-actions">
+            {{-- Dark Mode Toggle --}}
+            <button type="button" @click="$store.theme.toggle()" class="relative flex items-center justify-center w-10 h-10 rounded-xl
+                           transition-all duration-300 hover:bg-primary/10 dark:hover:bg-accent/10 hover:shadow-sm
+                           focus:outline-none focus:ring-2 focus:ring-primary/30" title="Cambiar tema">
+                {{-- Moon Icon (Light Mode) --}}
+                <svg x-show="!$store.theme.darkMode" x-cloak xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-main" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                </svg>
+                {{-- Sun Icon (Dark Mode) --}}
+                <svg x-show="$store.theme.darkMode" x-cloak xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 3v2.25m0 13.5V21m8.966-8.966h-2.25M5.25 12h-2.25m13.364-6.364l-1.591 1.591M6.756 17.244l-1.591 1.591m12.728 0l-1.591-1.591M6.756 6.756L5.165 5.165M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" />
+                </svg>
+            </button>
+
             {{-- Hamburger Menu Button --}}
             <button type="button" id="header-menu-btn" class="relative flex items-center justify-center w-10 h-10 rounded-xl
                            transition-all duration-300 hover:bg-primary/10 hover:shadow-sm
@@ -95,10 +119,11 @@
                 {{-- Animated hamburger bars --}}
                 <div class="flex flex-col justify-center items-center w-6 h-6 gap-[5px]">
                     <span id="bar-1"
-                        class="block w-5 h-[2px] bg-main rounded-full transition-all duration-300 origin-center"></span>
-                    <span id="bar-2" class="block w-5 h-[2px] bg-main rounded-full transition-all duration-300"></span>
+                        class="block w-5 h-[2px] bg-main dark:bg-gray-100 rounded-full transition-all duration-300 origin-center"></span>
+                    <span id="bar-2"
+                        class="block w-5 h-[2px] bg-main dark:bg-gray-100 rounded-full transition-all duration-300"></span>
                     <span id="bar-3"
-                        class="block w-5 h-[2px] bg-main rounded-full transition-all duration-300 origin-center"></span>
+                        class="block w-5 h-[2px] bg-main dark:bg-gray-100 rounded-full transition-all duration-300 origin-center"></span>
                 </div>
             </button>
 
@@ -106,8 +131,8 @@
             <button type="button" id="header-bell-btn" class="relative flex items-center justify-center w-10 h-10 rounded-xl
                            transition-all duration-300 hover:bg-primary/10 hover:shadow-sm
                            focus:outline-none focus:ring-2 focus:ring-primary/30" aria-label="Notificaciones">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-main" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-main dark:text-gray-100" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
                 </svg>
@@ -123,7 +148,7 @@
 
     {{-- Mobile Slide-Down Menu --}}
     <nav id="header-mobile-menu"
-        class="border-t border-gray-100 bg-white overflow-hidden transition-all duration-300 ease-in-out"
+        class="border-t border-gray-100 dark:border-emerald-900/40 bg-white dark:bg-[#162D1B] overflow-hidden transition-all duration-300 ease-in-out"
         style="max-height: 0; opacity: 0; box-shadow: inset 0 2px 6px rgba(0,0,0,0.03);">
         <div class="flex flex-col px-5 py-3 gap-1">
             <a href="{{ url('/') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-main font-medium text-sm
@@ -135,8 +160,9 @@
                 </svg>
                 Inicio
             </a>
-            <a href="{{ url('/vecinos') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-main font-medium text-sm
-                      transition-all duration-200 hover:bg-primary/10 hover:text-primary">
+            <a href="{{ url('/vecinos') }}"
+                class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-main dark:text-gray-100 font-medium text-sm
+                      transition-all duration-200 hover:bg-primary/10 dark:hover:bg-emerald-900/30 hover:text-primary dark:hover:text-accent">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -164,7 +190,7 @@
             </a>
             @if(Auth::check() && Auth::user()->rol_sistema === 'admin')
                 <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-purple-600 font-medium text-sm
-                                   transition-all duration-200 hover:bg-purple-50">
+                                                                   transition-all duration-200 hover:bg-purple-50">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round"

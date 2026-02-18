@@ -10,7 +10,7 @@
             @include('components.ui.section-title', ['title' => 'Gestión de Noticias', 'titleClass' => 'text-xl mb-0'])
 
             <a href="{{ route('admin.noticias.create') }}" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-primary text-white text-sm font-medium shadow-md
-                      transition-all duration-200 hover:scale-105 active:scale-95">
+                              transition-all duration-200 hover:scale-105 active:scale-95">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -40,7 +40,7 @@
                 ])
                 <div class="flex items-center gap-4 flex-1">
                     {{-- Thumbnail --}}
-                    <div class="flex-shrink-0 w-12 h-12 rounded-xl overflow-hidden bg-primary/10">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-xl overflow-hidden bg-primary/10 dark:bg-primary/20">
                         @if($noticia->adjunto_url)
                             <img src="{{ $noticia->adjunto_url }}" alt="{{ $noticia->titulo }}" class="w-full h-full object-cover">
                         @else
@@ -56,10 +56,10 @@
 
                     {{-- Info --}}
                     <div class="flex-1 min-w-0">
-                        <p class="font-poppins font-semibold text-base text-main truncate">
+                        <p class="font-poppins font-semibold text-base text-main dark:text-gray-100 truncate">
                             {{ $noticia->titulo }}
                         </p>
-                        <p class="text-xs text-muted">
+                        <p class="text-xs text-muted dark:text-gray-400">
                             Publicado el {{ $noticia->fecha_publicacion->format('d/m/Y') }} por {{ $noticia->autor->nombre }}
                         </p>
                     </div>
@@ -67,11 +67,12 @@
 
                 {{-- Actions --}}
                 <div
-                    class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0">
+                    class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 dark:border-emerald-900/40 pt-3 sm:pt-0">
                     <a href="{{ route('noticias.show', $noticia) }}" target="_blank"
-                        class="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" title="Ver noticia">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-muted" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor" stroke-width="2">
+                        class="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-900/30 transition-colors duration-200"
+                        title="Ver noticia">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-muted dark:text-gray-400" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z" />
                             <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -104,14 +105,15 @@
                 @endcomponent
             @empty
                 <div class="flex flex-col items-center justify-center py-16 text-center">
-                    <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 mb-4">
+                    <div
+                        class="flex items-center justify-center w-16 h-16 rounded-full bg-primary/5 dark:bg-emerald-950/40 mb-4">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-primary/40" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
                         </svg>
                     </div>
-                    <p class="font-medium text-sm text-muted">No hay noticias publicadas</p>
+                    <p class="font-medium text-sm text-muted dark:text-gray-400">No hay noticias publicadas</p>
                     <a href="{{ route('admin.noticias.create') }}"
                         class="mt-2 text-primary text-sm font-medium hover:underline">
                         Publicar la primera

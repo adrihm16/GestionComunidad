@@ -1,17 +1,17 @@
 {{-- Admin Sidebar --}}
 <aside
-    class="fixed right-0 top-[65px] bottom-0 z-30 w-64 bg-white border-l border-gray-100 flex flex-col transition-transform duration-300 ease-in-out"
+    class="fixed right-0 top-[65px] bottom-0 z-30 w-64 bg-white dark:bg-[#0f1f12] border-l border-gray-100 dark:border-emerald-900/30 flex flex-col transition-transform duration-300 ease-in-out"
     :class="sidebarOpen ? 'translate-x-0' : 'translate-x-full'" style="height: calc(100vh - 65px); overflow-y: auto;">
 
     <div class="flex items-center justify-between p-6">
         <div>
-            <h2 class="text-xl font-bold text-primary">Panel Admin</h2>
-            <p class="text-xs text-muted mt-1">Gestión Comunidad</p>
+            <h2 class="text-xl font-bold text-primary dark:text-accent">Panel Admin</h2>
+            <p class="text-xs text-muted dark:text-emerald-500/60 mt-1">Gestión Comunidad</p>
         </div>
 
         {{-- Close Button --}}
         <button @click="sidebarOpen = false"
-            class="p-1 rounded-lg hover:bg-gray-100 text-muted hover:text-main transition-colors flex"
+            class="p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-emerald-900/30 text-muted dark:text-emerald-500/60 hover:text-main dark:hover:text-gray-100 transition-colors flex"
             title="Cerrar menú">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
@@ -23,7 +23,7 @@
     <nav class="flex-1 px-4 space-y-2 pb-6">
         <a href="{{ route('admin.users.index') }}"
             class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200
-                  {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 text-primary font-medium' : 'text-main hover:bg-gray-50' }}">
+                   {{ request()->routeIs('admin.users.*') ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent font-medium' : 'text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-emerald-900/30' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -34,7 +34,7 @@
 
         <a href="{{ route('admin.recibos.index') }}"
             class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200
-                  {{ request()->routeIs('admin.recibos.*') ? 'bg-primary/10 text-primary font-medium' : 'text-main hover:bg-gray-50' }}">
+                   {{ request()->routeIs('admin.recibos.*') ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent font-medium' : 'text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-emerald-900/30' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -45,7 +45,7 @@
 
         <a href="{{ route('admin.noticias.index') }}"
             class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200
-                  {{ request()->routeIs('admin.noticias.*') ? 'bg-primary/10 text-primary font-medium' : 'text-main hover:bg-gray-50' }}">
+                   {{ request()->routeIs('admin.noticias.*') ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent font-medium' : 'text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-emerald-900/30' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -56,7 +56,7 @@
 
         <a href="{{ route('admin.incidencias.index') }}"
             class="flex items-center gap-3 px-4 py-3 rounded-xl transition-colors duration-200
-                  {{ request()->routeIs('admin.incidencias.*') ? 'bg-primary/10 text-primary font-medium' : 'text-main hover:bg-gray-50' }}">
+                  {{ request()->routeIs('admin.incidencias.*') ? 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-accent font-medium' : 'text-main dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-emerald-900/30' }}">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -66,7 +66,7 @@
         </a>
     </nav>
 
-    <div class="p-4 border-t border-gray-100 bg-white sticky bottom-0">
+    <div class="p-4 border-t border-gray-100 dark:border-emerald-900/40 bg-white dark:bg-[#162D1B] sticky bottom-0">
         <a href="{{ route('inicio') }}"
             class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-muted hover:text-main transition-colors">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
