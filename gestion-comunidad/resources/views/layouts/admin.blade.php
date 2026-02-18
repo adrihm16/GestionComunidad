@@ -63,22 +63,24 @@
         @include('components.admin.sidebar')
 
         {{-- Main Content --}}
-        <main class="flex-1 px-5 py-6 w-full overflow-x-hidden transition-all duration-300 ease-in-out"
-            :class="sidebarOpen ? 'md:ml-64' : ''">
+        <main class="flex-1 px-5 py-6 w-full overflow-x-hidden transition-all duration-300 ease-in-out">
 
             {{-- Toggle Button (Visible when sidebar is closed) --}}
             <button x-show="!sidebarOpen" @click="sidebarOpen = true"
-                x-transition:enter="transition ease-out duration-300"
-                x-transition:enter-start="opacity-0 -translate-x-4" x-transition:enter-end="opacity-100 translate-x-0"
-                class="fixed left-4 top-[90px] z-40 p-3 bg-primary text-white rounded-full shadow-lg hover:scale-110 transition-transform flex"
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4"
+                x-transition:enter-end="opacity-100 translate-x-0"
+                class="fixed right-6 bottom-6 z-40 p-4 bg-primary text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex"
                 title="Abrir menú">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
 
-            @yield('content')
+            <div class="max-w-screen-xl mx-auto">
+                @yield('content')
+            </div>
         </main>
     </div>
 
