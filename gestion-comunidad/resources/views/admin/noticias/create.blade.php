@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Editar Noticia - Panel Admin')
+@section('title', 'Nueva Noticia - Panel Admin')
 
 @section('content')
     <div class="flex flex-col gap-5">
@@ -16,26 +16,25 @@
         </a>
 
         {{-- Page Title --}}
-        @include('components.ui.section-title', ['title' => 'Editar noticia', 'titleClass' => 'text-xl'])
+        @include('components.ui.section-title', ['title' => 'Publicar nueva noticia', 'titleClass' => 'text-xl'])
 
         {{-- Form Card --}}
         @component('components.ui.card', ['hover' => false])
-        <form action="{{ route('admin.noticias.update', $noticia) }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('admin.noticias.store') }}" method="POST" enctype="multipart/form-data"
             class="flex flex-col gap-5">
             @csrf
-            @method('PUT')
 
             {{-- Título --}}
             <div class="flex flex-col gap-1.5">
                 <label for="titulo" class="text-sm font-medium text-main">
                     Título <span class="text-red-500">*</span>
                 </label>
-                <input type="text" id="titulo" name="titulo" value="{{ old('titulo', $noticia->titulo) }}"
+                <input type="text" id="titulo" name="titulo" value="{{ old('titulo') }}"
                     placeholder="Ej: Nueva normativa de reciclaje en la comunidad" required maxlength="150" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                   placeholder-gray-400 bg-white
-                                   focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                   transition-all duration-200
-                                   @error('titulo') border-red-400 ring-2 ring-red-100 @enderror">
+                                  placeholder-gray-400 bg-white
+                                  focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                  transition-all duration-200
+                                  @error('titulo') border-red-400 ring-2 ring-red-100 @enderror">
                 @error('titulo')
                     <p class="text-xs text-red-500 mt-0.5">{{ $message }}</p>
                 @enderror
@@ -49,36 +48,24 @@
                 <textarea id="contenido" name="contenido" rows="8"
                     placeholder="Escribe el contenido completo de la noticia..." required
                     class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                   placeholder-gray-400 bg-white resize-none
-                                   focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                   transition-all duration-200
-                                   @error('contenido') border-red-400 ring-2 ring-red-100 @enderror">{{ old('contenido', $noticia->contenido) }}</textarea>
+                                     placeholder-gray-400 bg-white resize-none
+                                     focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                     transition-all duration-200
+                                     @error('contenido') border-red-400 ring-2 ring-red-100 @enderror">{{ old('contenido') }}</textarea>
                 @error('contenido')
                     <p class="text-xs text-red-500 mt-0.5">{{ $message }}</p>
                 @enderror
             </div>
 
-            {{-- Imagen actual --}}
-            @if($noticia->adjunto_url)
-                <div class="flex flex-col gap-1.5">
-                    <label class="text-sm font-medium text-main">Imagen actual</label>
-                    <div class="relative w-full h-48 rounded-xl overflow-hidden border border-gray-100">
-                        <img src="{{ $noticia->adjunto_url }}" alt="Imagen actual" class="w-full h-full object-cover">
-                    </div>
-                    <p class="text-xs text-muted">Puedes subir una nueva imagen para reemplazarla</p>
-                </div>
-            @endif
-
-            {{-- Nueva imagen --}}
+            {{-- Imagen --}}
             <div class="flex flex-col gap-1.5">
                 <label class="text-sm font-medium text-main">
-                    {{ $noticia->adjunto_url ? 'Nueva imagen' : 'Imagen' }}
-                    <span class="text-xs text-muted font-normal">(opcional)</span>
+                    Imagen <span class="text-xs text-muted font-normal">(opcional)</span>
                 </label>
 
                 <div id="upload-area" class="relative w-full border-2 border-dashed border-gray-200 rounded-xl
-                                    transition-all duration-200 hover:border-primary/40 hover:bg-primary/5
-                                    @error('imagen') border-red-400 @enderror">
+                                              transition-all duration-200 hover:border-primary/40 hover:bg-primary/5
+                                              @error('imagen') border-red-400 @enderror">
 
                     <input type="file" id="imagen" name="imagen" accept="image/*"
                         class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" onchange="previewImage(this)">
@@ -101,9 +88,9 @@
                 <div id="preview-container" class="hidden relative">
                     <img id="preview-image" src="" alt="Preview"
                         class="w-full h-48 object-cover rounded-xl border border-gray-100">
-                    <button type="button" onclick="removeImage()" class="absolute top-2 right-2 flex items-center justify-center w-8 h-8 rounded-full
-                                           bg-red-500 text-white shadow-lg transition-all duration-200
-                                           hover:bg-red-600 hover:scale-110 active:scale-95">
+                    <button type="button" onclick="removeImage()" class="absolute top-2 right-2 flex items-center justify-center w-8 h-8 rounded-full 
+                                       bg-red-500 text-white shadow-lg transition-all duration-200
+                                       hover:bg-red-600 hover:scale-110 active:scale-95">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -120,7 +107,7 @@
             <button type="submit" class="w-full py-3 rounded-xl bg-primary text-white text-sm font-semibold
                                shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl
                                hover:shadow-primary/30 active:scale-[0.98]">
-                Actualizar noticia
+                Publicar noticia
             </button>
         </form>
         @endcomponent
@@ -139,7 +126,7 @@
                     previewImage.src = e.target.result;
                     uploadArea.classList.add('hidden');
                     previewContainer.classList.remove('hidden');
-                };
+                }
                 reader.readAsDataURL(input.files[0]);
             }
         }

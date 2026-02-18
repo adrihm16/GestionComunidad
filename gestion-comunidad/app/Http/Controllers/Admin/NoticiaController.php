@@ -43,7 +43,7 @@ class NoticiaController extends Controller
             'fecha_publicacion' => now(),
         ]);
 
-        return redirect()->route('admin.dashboard')
+        return redirect()->route('admin.noticias.index')
             ->with('success', 'Noticia publicada correctamente.');
     }
 
@@ -80,7 +80,7 @@ class NoticiaController extends Controller
             'adjunto_url' => $adjunto_url,
         ]);
 
-        return redirect()->route('admin.dashboard')
+        return redirect()->route('admin.noticias.index')
             ->with('success', 'Noticia actualizada correctamente.');
     }
 
@@ -95,7 +95,7 @@ class NoticiaController extends Controller
 
         $noticia->delete();
 
-        return redirect()->route('admin.dashboard')
+        return redirect()->route('admin.noticias.index')
             ->with('success', 'Noticia eliminada correctamente.');
     }
 }

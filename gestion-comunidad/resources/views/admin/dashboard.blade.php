@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Panel Admin - Gestión Comunidad')
 
@@ -348,6 +348,83 @@
             @endforelse
         </div>
 
+
+    {{-- Divider --}}
+    <div class="border-t border-gray-100"></div>
+
+    {{-- ===================================================== --}}
+    {{-- SECCIÓN 3: GESTIÓN DE INCIDENCIAS                     --}}
+    {{-- ===================================================== --}}
+    <div class="flex flex-col gap-4">
+
+        {{-- Section header --}}
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-red-100">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                    </svg>
+                </div>
+                <h2 class="font-poppins font-semibold text-base text-main">Gestión de Incidencias</h2>
+                <span class="text-xs text-muted bg-gray-100 px-2 py-0.5 rounded-full">{{ $incidencias->count() }}</span>
+            </div>
+            <a href="{{ route('admin.incidencias.index') }}"
+               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium shadow-md
+                      transition-all duration-200 hover:scale-105 active:scale-95">
+                Ver todas →
+            </a>
+        </div>
+
+        {{-- Incidencias list --}}
+        <div class="flex flex-col gap-3">
+            @forelse ($incidencias as $incidencia)
+                @component('components.ui.card', ['hover' => true, 'bodyClass' => 'flex items-center justify-between px-4 py-3'])
+                    <div class="flex items-center gap-3 flex-1 min-w-0">
+                        {{-- Priority Marker --}}
+                        @php
+                            $prioridadColor = match($incidencia->prioridad) {
+                                'baja' => 'bg-gray-400',
+                                'media' => 'bg-orange-400',
+                                'alta' => 'bg-red-500',
+                                default => 'bg-gray-400',
+                            };
+                        @endphp
+                        <div class="flex-shrink-0 w-2 h-2 rounded-full {{ $prioridadColor }}" title="Prioridad {{ $incidencia->prioridad }}"></div>
+                        
+                        {{-- Info --}}
+                        <div class="flex-1 min-w-0">
+                            <p class="font-poppins font-semibold text-sm text-main truncate">{{ $incidencia->titulo }}</p>
+                            <p class="text-xs text-muted truncate">Por {{ $incidencia->creador->nombre }} · {{ ucfirst($incidencia->estado) }}</p>
+                        </div>
+                    </div>
+                    {{-- Actions --}}
+                    <div class="flex items-center gap-1 ml-3 flex-shrink-0">
+                        <a href="{{ route('incidencias.show', $incidencia) }}"
+                           class="p-2 rounded-lg hover:bg-gray-100 transition-colors duration-200" title="Ver y gestionar">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </a>
+                        <form method="POST" action="{{ route('admin.incidencias.destroy', $incidencia) }}"
+                              onsubmit="return confirm('¿Eliminar esta incidencia?')" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="p-2 rounded-lg hover:bg-red-50 transition-colors duration-200" title="Eliminar incidencia">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                @endcomponent
+            @empty
+                <div class="flex flex-col items-center justify-center py-10 text-center">
+                    <p class="text-sm text-muted">No hay incidencias reportadas aún</p>
+                </div>
+            @endforelse
+        </div>
+
     </div>
 
 </div>
@@ -355,9 +432,9 @@
 <script>
 function adminPanel() {
     return {
-        formOpen: {{ $errors->any() ? 'true' : 'false' }},
-        formMode: '{{ old("_method") === "PUT" ? "edit" : "create" }}',
-        editId: null,
+        formOpen: {{ ($errors->any() || request('edit_noticia')) ? 'true' : 'false' }},
+        formMode: '{{ (old("_method") === "PUT" || request('edit_noticia')) ? "edit" : "create" }}',
+        editId: {{ request('edit_noticia') ?? 'null' }},
 
         openForm(mode, id = null) {
             if (this.formOpen && this.formMode === mode && this.editId === id) {

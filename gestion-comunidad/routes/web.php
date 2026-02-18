@@ -149,6 +149,9 @@ Route::middleware('auth')->group(function () {
 
         // Noticias management
         Route::resource('noticias', AdminNoticiaController::class)->except(['show']);
+
+        // Incidencias management
+        Route::resource('incidencias', \App\Http\Controllers\Admin\IncidenciaController::class)->only(['index', 'destroy']);
     });
 });
 

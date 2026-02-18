@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Inmueble;
 use App\Models\Noticia;
+use App\Models\Incidencia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -35,8 +36,9 @@ class UserController extends Controller
 
         $users = $query->orderBy('nombre')->paginate(10);
         $noticias = Noticia::with('autor')->orderBy('fecha_publicacion', 'desc')->get();
+        $incidencias = Incidencia::with('creador')->orderBy('fecha_creacion', 'desc')->take(5)->get();
 
-        return view('admin.dashboard', compact('users', 'noticias'));
+        return view('admin.dashboard', compact('users', 'noticias', 'incidencias'));
     }
 
     /**
