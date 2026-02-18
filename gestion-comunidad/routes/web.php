@@ -140,6 +140,9 @@ Route::middleware('auth')->group(function () {
             ->name('users.inmuebles.store');
         Route::delete('users/{user}/inmuebles/{inmueble}', [\App\Http\Controllers\Admin\UserController::class, 'destroyInmueble'])
             ->name('users.inmuebles.destroy');
+
+        // Recibos management
+        Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class)->only(['index', 'create', 'store']);
     });
 });
 
