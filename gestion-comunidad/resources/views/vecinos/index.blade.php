@@ -16,20 +16,22 @@
 
         @forelse ($inmuebles as $inmueble)
                 {{-- Vecino Card --}}
-                @component('components.ui.card', [
-                    'hover' => true,
-                    'stripContent' => '<span class="font-poppins font-semibold text-white text-base">' . e($inmueble->piso) . 'º' . e($inmueble->puerta) . '</span>',
-                    'bodyClass' => 'flex items-center justify-between px-4 py-3.5',
-                    'cardClass' => '',
-                ])
-                    <p class="font-poppins font-medium text-base text-main">
-                        {{ $inmueble->propietario->nombre }} {{ $inmueble->propietario->apellidos }}
-                    </p>
+                <a href="{{ route('vecinos.show', $inmueble->propietario) }}">
+                    @component('components.ui.card', [
+                        'hover' => true,
+                        'stripContent' => '<span class="font-poppins font-semibold text-white text-base">' . e($inmueble->piso) . 'º' . e($inmueble->puerta) . '</span>',
+                        'bodyClass' => 'flex items-center justify-between px-4 py-3.5',
+                        'cardClass' => 'cursor-pointer',
+                    ])
+                        <p class="font-poppins font-medium text-base text-main">
+                            {{ $inmueble->propietario->nombre }} {{ $inmueble->propietario->apellidos }}
+                        </p>
 
-                    @if($inmueble->propietario->cargo_comunidad && $inmueble->propietario->cargo_comunidad !== '' && $inmueble->propietario->cargo_comunidad !== '-')
-                        @include('components.ui.badge', ['text' => $inmueble->propietario->cargo_comunidad, 'variant' => 'accent'])
-                    @endif
-                @endcomponent
+                        @if($inmueble->propietario->cargo_comunidad && $inmueble->propietario->cargo_comunidad !== '' && $inmueble->propietario->cargo_comunidad !== '-')
+                            @include('components.ui.badge', ['text' => $inmueble->propietario->cargo_comunidad, 'variant' => 'accent'])
+                        @endif
+                    @endcomponent
+                </a>
         @empty
             {{-- Empty state --}}
             <div class="flex flex-col items-center justify-center py-12 text-center">

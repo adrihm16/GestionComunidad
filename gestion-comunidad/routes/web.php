@@ -115,6 +115,7 @@ Route::middleware('auth')->group(function () {
 
     // Vecinos list
     Route::get('/vecinos', [VecinoController::class, 'index'])->name('vecinos.index');
+    Route::get('/vecinos/{user}', [VecinoController::class, 'show'])->name('vecinos.show');
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -129,6 +130,17 @@ Route::middleware('auth')->group(function () {
     Route::post('incidencias/{incidencia}/estado', [IncidenciaController::class, 'updateEstado'])->name('incidencias.estado.update');
     Route::resource('noticias', NoticiaController::class);
     Route::resource('eventos', EventoController::class);
+    
+    // Admin routes - Only accessible by admin users
+    Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
+        
+        // Inmuebles management for users
+        Route::post('users/{user}/inmuebles', [\App\Http\Controllers\Admin\UserController::class, 'storeInmueble'])
+            ->name('users.inmuebles.store');
+        Route::delete('users/{user}/inmuebles/{inmueble}', [\App\Http\Controllers\Admin\UserController::class, 'destroyInmueble'])
+            ->name('users.inmuebles.destroy');
+    });
 });
 
 Route::get('/inicio', function () {
