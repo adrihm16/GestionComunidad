@@ -96,7 +96,8 @@
                             <p class="font-poppins font-semibold text-sm text-main truncate">{{ $user->nombre }} {{ $user->apellidos }}</p>
                             <p class="text-xs text-muted truncate">{{ $user->email }}</p>
                         </div>
-                        <div class="flex items-center gap-2 flex-shrink-0">
+                        {{-- Badges Container (Fixed width for alignment) --}}
+                        <div class="hidden sm:flex items-center justify-end w-24 flex-shrink-0">
                             @php
                                 $rolBadge = match($user->rol_sistema) {
                                     'admin' => 'bg-purple-100 text-purple-700',
@@ -104,12 +105,14 @@
                                     default => 'bg-gray-100 text-gray-600',
                                 };
                             @endphp
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-semibold {{ $rolBadge }}">
-                                {{ ucfirst($user->rol_sistema) }}
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-[10px] font-bold uppercase tracking-wider {{ $rolBadge }}">
+                                {{ $user->rol_sistema }}
                             </span>
                         </div>
                     </div>
-                    <div class="flex items-center gap-1 ml-4 flex-shrink-0">
+
+                    {{-- Actions Container (Fixed width for alignment) --}}
+                    <div class="flex items-center justify-end gap-1 ml-4 flex-shrink-0 w-20">
                         <a href="{{ route('admin.users.edit', $user) }}"
                            class="p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200" title="Editar usuario">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -127,6 +130,8 @@
                                     </svg>
                                 </button>
                             </form>
+                        @else
+                            <div class="w-8"></div> {{-- Placeholder for vertical alignment --}}
                         @endif
                     </div>
                 @endcomponent
@@ -172,6 +177,16 @@
                 </svg>
                 <span x-text="formMode === 'create' && formOpen ? 'Cancelar' : 'Nueva noticia'"></span>
             </button>
+        </div>
+ 
+        {{-- ── Inline view-all link ── --}}
+        <div class="flex justify-end -mt-2">
+            <a href="{{ route('admin.noticias.index') }}" class="text-xs text-primary font-medium hover:underline flex items-center gap-1">
+                Ver todas las noticias
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+            </a>
         </div>
 
         {{-- ── Inline form panel (Alpine.js accordion) ── --}}
@@ -368,11 +383,84 @@
                 <h2 class="font-poppins font-semibold text-base text-main">Gestión de Incidencias</h2>
                 <span class="text-xs text-muted bg-gray-100 px-2 py-0.5 rounded-full">{{ $incidencias->count() }}</span>
             </div>
-            <a href="{{ route('admin.incidencias.index') }}"
-               class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium shadow-md
-                      transition-all duration-200 hover:scale-105 active:scale-95">
-                Ver todas →
+            <button type="button" @click="openIncidenciaForm()"
+                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-white text-sm font-medium shadow-md
+                           transition-all duration-200 hover:scale-105 active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transition-transform duration-200"
+                     :class="incidenciaFormOpen ? 'rotate-45' : ''"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span x-text="incidenciaFormOpen ? 'Cancelar' : 'Nueva incidencia'"></span>
+            </button>
+        </div>
+
+        {{-- ── Inline view-all link (for reference) ── --}}
+        <div class="flex justify-end -mt-2">
+            <a href="{{ route('admin.incidencias.index') }}" class="text-xs text-primary font-medium hover:underline flex items-center gap-1">
+                Ver todas las incidencias
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
             </a>
+        </div>
+
+        {{-- ── Inline incident form panel ── --}}
+        <div x-show="incidenciaFormOpen"
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 -translate-y-2"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="opacity-100 translate-y-0"
+             x-transition:leave-end="opacity-0 -translate-y-2"
+             style="display:none;">
+            @component('components.ui.card', ['hover' => false])
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-poppins font-semibold text-sm text-main">Reportar Nueva Incidencia (Admin)</h3>
+                    <button type="button" @click="incidenciaFormOpen = false"
+                            class="p-1.5 rounded-lg hover:bg-gray-100 transition-colors duration-200 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+
+                <form action="{{ route('admin.incidencias.store') }}" method="POST" enctype="multipart/form-data" class="flex flex-col gap-4">
+                    @csrf
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-medium text-main">Título <span class="text-red-500">*</span></label>
+                        <input type="text" name="titulo" required maxlength="100" placeholder="Ej: Fuga de agua en el garaje"
+                               class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-primary/30 outline-none">
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-medium text-main">Descripción <span class="text-red-500">*</span></label>
+                        <textarea name="descripcion" rows="3" required placeholder="Describe el problema..."
+                                  class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm focus:ring-2 focus:ring-primary/30 outline-none resize-none"></textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-medium text-main">Prioridad <span class="text-red-500">*</span></label>
+                            <select name="prioridad" required class="w-full px-3 py-2 rounded-xl border border-gray-200 text-sm outline-none">
+                                <option value="baja">Baja</option>
+                                <option value="media" selected>Media</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-xs font-medium text-main">Foto <span class="text-xs text-muted font-normal">(opcional)</span></label>
+                            <input type="file" name="foto" accept="image/*" class="text-xs">
+                        </div>
+                    </div>
+                    <div class="flex gap-3 pt-1">
+                        <button type="submit" class="flex-1 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold shadow-md active:scale-95 transition-all">
+                            Reportar incidencia
+                        </button>
+                        <button type="button" @click="incidenciaFormOpen = false" class="px-4 py-2.5 rounded-xl bg-gray-100 text-main text-sm font-medium hover:bg-gray-200 transition-all">
+                            Cancelar
+                        </button>
+                    </div>
+                </form>
+            @endcomponent
         </div>
 
         {{-- Incidencias list --}}
@@ -407,7 +495,7 @@
                             </svg>
                         </a>
                         <form method="POST" action="{{ route('admin.incidencias.destroy', $incidencia) }}"
-                              onsubmit="return confirm('¿Eliminar esta incidencia?')" class="inline">
+                               onsubmit="return confirm('¿Eliminar esta incidencia?')" class="inline">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="p-2 rounded-lg hover:bg-red-50 transition-colors duration-200" title="Eliminar incidencia">
@@ -421,6 +509,9 @@
             @empty
                 <div class="flex flex-col items-center justify-center py-10 text-center">
                     <p class="text-sm text-muted">No hay incidencias reportadas aún</p>
+                    <button type="button" @click="openIncidenciaForm()" class="mt-2 text-sm text-primary font-medium hover:underline">
+                        Crear la primera →
+                    </button>
                 </div>
             @endforelse
         </div>
@@ -432,11 +523,14 @@
 <script>
 function adminPanel() {
     return {
-        formOpen: {{ ($errors->any() || request('edit_noticia')) ? 'true' : 'false' }},
+        formOpen: {{ ($errors->any() && !old('incidencia_form')) ? 'true' : 'false' }},
         formMode: '{{ (old("_method") === "PUT" || request('edit_noticia')) ? "edit" : "create" }}',
         editId: {{ request('edit_noticia') ?? 'null' }},
 
+        incidenciaFormOpen: {{ (old('incidencia_form')) ? 'true' : 'false' }},
+
         openForm(mode, id = null) {
+            this.incidenciaFormOpen = false;
             if (this.formOpen && this.formMode === mode && this.editId === id) {
                 this.closeForm();
                 return;
@@ -452,6 +546,11 @@ function adminPanel() {
         closeForm() {
             this.formOpen = false;
             this.editId = null;
+        },
+
+        openIncidenciaForm() {
+            this.closeForm();
+            this.incidenciaFormOpen = !this.incidenciaFormOpen;
         }
     }
 }

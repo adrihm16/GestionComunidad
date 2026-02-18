@@ -151,7 +151,7 @@ Route::middleware('auth')->group(function () {
         Route::resource('noticias', AdminNoticiaController::class)->except(['show']);
 
         // Incidencias management
-        Route::resource('incidencias', \App\Http\Controllers\Admin\IncidenciaController::class)->only(['index', 'destroy']);
+        Route::resource('incidencias', \App\Http\Controllers\Admin\IncidenciaController::class)->only(['index', 'store', 'destroy', 'update']);
     });
 });
 

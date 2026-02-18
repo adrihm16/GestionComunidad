@@ -108,8 +108,8 @@
                         @endif
                     </div>
 
-                    {{-- Role Badge --}}
-                    <div class="flex items-center gap-2">
+                    {{-- Badges Container (Fixed width for persistent alignment) --}}
+                    <div class="flex items-center gap-2 flex-shrink-0 min-w-[220px] justify-end">
                         @php
                             $rolBadge = match($user->rol_sistema) {
                                 'admin' => 'bg-purple-100 text-purple-700',
@@ -117,20 +117,22 @@
                                 default => 'bg-gray-100 text-gray-600',
                             };
                         @endphp
-                        <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold {{ $rolBadge }}">
-                            {{ ucfirst($user->rol_sistema) }}
+                        <span class="inline-flex items-center px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider {{ $rolBadge }}">
+                            {{ $user->rol_sistema }}
                         </span>
 
                         @if($user->cargo_comunidad)
-                            <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-amber-100 text-amber-700">
+                            <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-lg text-[10px] font-bold bg-amber-100 text-amber-700 uppercase tracking-wider">
                                 {{ $user->cargo_comunidad }}
                             </span>
+                        @else
+                            <div class="hidden sm:block w-24"></div> {{-- Placeholder for empty cargo --}}
                         @endif
                     </div>
                 </div>
 
-                {{-- Actions --}}
-                <div class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0">
+                {{-- Actions Container (Fixed width for persistent alignment) --}}
+                <div class="flex items-center justify-end gap-1 w-full sm:w-24 sm:ml-4 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0 flex-shrink-0">
                     <a href="{{ route('admin.users.edit', $user) }}" 
                        class="p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200"
                        title="Editar usuario">
@@ -153,6 +155,8 @@
                                 </svg>
                             </button>
                         </form>
+                    @else
+                        <div class="w-9 h-9"></div> {{-- Placeholder for alignment --}}
                     @endif
                 </div>
             @endcomponent
