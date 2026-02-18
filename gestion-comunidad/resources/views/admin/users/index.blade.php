@@ -87,7 +87,7 @@
         @forelse ($users as $user)
             @component('components.ui.card', [
                 'hover' => true,
-                'bodyClass' => 'flex items-center justify-between px-4 py-4',
+                'bodyClass' => 'flex flex-col sm:flex-row sm:items-center justify-between px-4 py-4 gap-4 sm:gap-0',
             ])
                 <div class="flex items-center gap-4 flex-1">
                     {{-- Avatar --}}
@@ -130,7 +130,7 @@
                 </div>
 
                 {{-- Actions --}}
-                <div class="flex items-center gap-2 ml-4">
+                <div class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0">
                     <a href="{{ route('admin.users.edit', $user) }}" 
                        class="p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200"
                        title="Editar usuario">

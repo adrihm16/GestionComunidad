@@ -14,6 +14,7 @@
 
     {{-- Base styles fallback --}}
     <style>
+        [x-cloak] { display: none !important; }
         body { background-color: #F5F7FA; font-family: 'Poppins', sans-serif; color: #1A1A1A; }
     </style>
 
@@ -41,7 +42,7 @@
         }
     </script>
 </head>
-<body class="bg-page font-poppins text-main min-h-screen flex flex-col" x-data="{ sidebarOpen: true }">
+<body class="bg-page font-poppins text-main min-h-screen flex flex-col" x-data="{ sidebarOpen: false }" x-cloak>
 
     {{-- Header --}}
     @include('components.header.header')
