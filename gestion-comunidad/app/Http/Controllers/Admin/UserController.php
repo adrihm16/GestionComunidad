@@ -5,42 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Inmueble;
-use App\Models\Noticia;
-use App\Models\Incidencia;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    /**
-     * Unified admin dashboard.
-     */
-    public function dashboard(Request $request)
-    {
-        $query = User::query();
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->where('nombre', 'like', "%{$search}%")
-                  ->orWhere('apellidos', 'like', "%{$search}%")
-                  ->orWhere('email', 'like', "%{$search}%");
-            });
-        }
-
-        if ($request->filled('rol')) {
-            $query->where('rol_sistema', $request->rol);
-        }
-
-        $users = $query->orderBy('nombre')->paginate(10);
-        $noticias = Noticia::with('autor')->orderBy('fecha_publicacion', 'desc')->get();
-        $incidencias = Incidencia::with('creador')->orderBy('fecha_creacion', 'desc')->take(5)->get();
-
-        return view('admin.dashboard', compact('users', 'noticias', 'incidencias'));
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -147,7 +117,7 @@ class UserController extends Controller
 
         $user->update($validated);
 
-        return redirect()->route('admin.dashboard')
+        return redirect()->route('admin.users.index')
             ->with('success', 'Usuario actualizado correctamente.');
     }
 
@@ -157,14 +127,14 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Evitar que el admin se elimine a sí mismo
-        if ($user->id === Auth::id()) {
-            return redirect()->route('admin.dashboard')
+        if ($user->id === auth()->id()) {
+            return redirect()->route('admin.users.index')
                 ->with('error', 'No puedes eliminar tu propia cuenta desde aquí.');
         }
 
         $user->delete();
 
-        return redirect()->route('admin.dashboard')
+        return redirect()->route('admin.users.index')
             ->with('success', 'Usuario eliminado correctamente.');
     }
 
