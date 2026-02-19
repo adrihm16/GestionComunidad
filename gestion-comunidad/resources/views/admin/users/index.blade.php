@@ -47,7 +47,7 @@
                        name="search" 
                        value="{{ request('search') }}"
                        placeholder="Buscar por nombre, apellidos o email..."
-                       class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-main dark:text-gray-100
+                       class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
                               focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
                               transition-all duration-200">
             </div>
@@ -55,7 +55,7 @@
             {{-- Role filter --}}
             <div>
                 <select name="rol" 
-                        class="w-full md:w-40 px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm text-main dark:text-gray-100
+                        class="w-full md:w-40 px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
                                focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
                                transition-all duration-200">
                     <option value="">Todos los roles</option>
@@ -74,8 +74,8 @@
             {{-- Clear filters --}}
             @if(request('search') || request('rol'))
                 <a href="{{ route('admin.users.index') }}" 
-                   class="px-4 py-2.5 rounded-xl bg-gray-100 dark:bg-gray-800 text-main dark:text-gray-300 text-sm font-medium
-                          transition-all duration-200 hover:bg-gray-200 dark:hover:bg-gray-700">
+                   class="px-4 py-2.5 rounded-xl bg-gray-100 text-main text-sm font-medium
+                          transition-all duration-200 hover:bg-gray-200">
                     Limpiar
                 </a>
             @endif
@@ -99,40 +99,38 @@
 
                     {{-- User Info --}}
                     <div class="flex-1 min-w-0">
-                        <p class="font-poppins font-semibold text-base text-main dark:text-gray-100 truncate">
+                        <p class="font-poppins font-semibold text-base text-main truncate">
                             {{ $user->nombre }} {{ $user->apellidos }}
                         </p>
-                        <p class="text-sm text-muted dark:text-gray-400 truncate">{{ $user->email }}</p>
+                        <p class="text-sm text-muted truncate">{{ $user->email }}</p>
                         @if($user->telefono)
                             <p class="text-xs text-muted mt-0.5">{{ $user->telefono }}</p>
                         @endif
                     </div>
 
-                    {{-- Badges Container (Fixed width for persistent alignment) --}}
-                    <div class="flex items-center gap-2 flex-shrink-0 min-w-[220px] justify-end">
+                    {{-- Role Badge --}}
+                    <div class="flex items-center gap-2">
                         @php
                             $rolBadge = match($user->rol_sistema) {
-                                'admin' => 'bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300',
-                                'vecino' => 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300',
-                                default => 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400',
+                                'admin' => 'bg-purple-100 text-purple-700',
+                                'vecino' => 'bg-blue-100 text-blue-700',
+                                default => 'bg-gray-100 text-gray-600',
                             };
                         @endphp
-                        <span class="inline-flex items-center px-3 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider {{ $rolBadge }}">
-                            {{ $user->rol_sistema }}
+                        <span class="inline-flex items-center px-3 py-1 rounded-lg text-xs font-semibold {{ $rolBadge }}">
+                            {{ ucfirst($user->rol_sistema) }}
                         </span>
 
                         @if($user->cargo_comunidad)
-                            <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-lg text-[10px] font-bold bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-300 uppercase tracking-wider">
+                            <span class="hidden sm:inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-amber-100 text-amber-700">
                                 {{ $user->cargo_comunidad }}
                             </span>
-                        @else
-                            <div class="hidden sm:block w-24"></div> {{-- Placeholder for empty cargo --}}
                         @endif
                     </div>
                 </div>
 
-                {{-- Actions Container (Fixed width for persistent alignment) --}}
-                <div class="flex items-center justify-end gap-1 w-full sm:w-24 sm:ml-4 border-t sm:border-t-0 border-gray-100 dark:border-emerald-900/30 pt-3 sm:pt-0 flex-shrink-0">
+                {{-- Actions --}}
+                <div class="flex items-center justify-end gap-2 w-full sm:w-auto sm:ml-4 border-t sm:border-t-0 border-gray-100 pt-3 sm:pt-0">
                     <a href="{{ route('admin.users.edit', $user) }}" 
                        class="p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200"
                        title="Editar usuario">
@@ -155,8 +153,6 @@
                                 </svg>
                             </button>
                         </form>
-                    @else
-                        <div class="w-9 h-9"></div> {{-- Placeholder for alignment --}}
                     @endif
                 </div>
             @endcomponent
@@ -168,9 +164,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
                     </svg>
                 </div>
-                <p class="font-medium text-sm text-muted dark:text-gray-400">No se encontraron usuarios</p>
+                <p class="font-medium text-sm text-muted">No se encontraron usuarios</p>
                 @if(request('search') || request('rol'))
-                    <p class="text-xs text-muted dark:text-gray-500 mt-1">Prueba con otros filtros</p>
+                    <p class="text-xs text-muted mt-1">Prueba con otros filtros</p>
                 @endif
             </div>
         @endforelse
