@@ -133,6 +133,10 @@ Route::middleware('auth')->group(function () {
     
     // Admin routes - Only accessible by admin users
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         
         // Inmuebles management for users
@@ -143,6 +147,18 @@ Route::middleware('auth')->group(function () {
 
         // Recibos management
         Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class)->only(['index', 'create', 'store']);
+
+        // Noticias management
+        Route::resource('noticias', \App\Http\Controllers\Admin\NoticiaController::class);
+
+        // Incidencias management
+        Route::resource('incidencias', \App\Http\Controllers\Admin\IncidenciaController::class);
+
+        // Balance de Gastos e Ingresos
+        Route::get('balance', [\App\Http\Controllers\Admin\BalanceController::class, 'index'])->name('balance.index');
+        Route::post('balance/gastos', [\App\Http\Controllers\Admin\BalanceController::class, 'store'])->name('balance.store');
+        Route::delete('balance/gastos/{gasto}', [\App\Http\Controllers\Admin\BalanceController::class, 'destroy'])->name('balance.destroy');
+        Route::post('balance/settings', [\App\Http\Controllers\Admin\BalanceController::class, 'updateSetting'])->name('balance.settings.update');
     });
 });
 
