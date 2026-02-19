@@ -142,7 +142,7 @@ Route::middleware('auth')->group(function () {
             ->name('users.inmuebles.destroy');
 
         // Recibos management
-        Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class)->only(['index', 'create', 'store']);
+        Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class);
     });
 });
 
