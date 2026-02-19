@@ -26,6 +26,7 @@ class User extends Authenticatable
         'telefono',
         'rol_sistema',
         'cargo_comunidad',
+        'iban',
         'avatar_url',
         'fecha_registro',
     ];
