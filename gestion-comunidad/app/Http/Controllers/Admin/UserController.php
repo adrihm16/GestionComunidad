@@ -81,27 +81,18 @@ class UserController extends Controller
                 
                 $user = User::create($userData);
 
-                // 2. Create Properties
+                // 2. Create or Link Properties
                 foreach ($validated['inmuebles'] as $inmData) {
-                    // Check uniqueness first
-                    $existing = Inmueble::where('tipo', $inmData['tipo'])
-                        ->where('bloque', $inmData['bloque'] ?? null)
-                        ->where('piso', $inmData['piso'])
-                        ->where('puerta', $inmData['puerta'])
-                        ->first();
-
-                    if ($existing) {
-                        $ubicacion = $inmData['tipo'] . " " . ($inmData['bloque'] ? "Bloque {$inmData['bloque']} " : "") . "Piso {$inmData['piso']} Puerta {$inmData['puerta']}";
-                        throw new \Exception("El inmueble ({$ubicacion}) ya existe y está asignado a " . ($existing->propietario ? $existing->propietario->nombre . " " . $existing->propietario->apellidos : 'otro usuario') . ".");
-                    }
-
-                    Inmueble::create([
-                        'propietario_id' => $user->id,
+                    // Find existing property by physical address
+                    $inmueble = Inmueble::firstOrCreate([
                         'tipo' => $inmData['tipo'],
                         'bloque' => $inmData['bloque'] ?? null,
                         'piso' => $inmData['piso'],
                         'puerta' => $inmData['puerta'],
                     ]);
+
+                    // Link user to property (attach)
+                    $user->inmuebles()->attach($inmueble->id);
                 }
 
                 return redirect()->route('admin.users.index')
@@ -192,28 +183,25 @@ class UserController extends Controller
             'puerta' => ['required', 'string', 'max:10'],
         ]);
 
-        // Verificar si el inmueble ya existe (misma ubicación física)
-        $existingInmueble = Inmueble::where('tipo', $validated['tipo'])
-            ->where('bloque', $validated['bloque'])
-            ->where('piso', $validated['piso'])
-            ->where('puerta', $validated['puerta'])
-            ->with('propietario')
-            ->first();
+        // Buscar o crear el inmueble (ubicación física)
+        $inmueble = Inmueble::firstOrCreate([
+            'tipo' => $validated['tipo'],
+            'bloque' => $validated['bloque'] ?? null,
+            'piso' => $validated['piso'],
+            'puerta' => $validated['puerta'],
+        ]);
 
-        if ($existingInmueble) {
-            $propietarioNombre = $existingInmueble->propietario 
-                ? $existingInmueble->propietario->nombre . ' ' . $existingInmueble->propietario->apellidos
-                : 'otro propietario';
-
+        // Verificar si el usuario ya tiene este inmueble asignado
+        if ($user->inmuebles()->where('inmueble_id', $inmueble->id)->exists()) {
             return redirect()->to(route('admin.users.edit', $user) . '#inmuebles')
-                ->with('error', "Este inmueble ya existe y está asignado a {$propietarioNombre}. No se pueden duplicar propiedades.");
+                ->with('error', 'Este inmueble ya está asignado a este usuario.');
         }
 
-        $validated['propietario_id'] = $user->id;
-        Inmueble::create($validated);
+        // Vincular usuario al inmueble
+        $user->inmuebles()->attach($inmueble->id);
 
         return redirect()->to(route('admin.users.edit', $user) . '#inmuebles')
-            ->with('success', 'Inmueble asignado correctamente.');
+            ->with('success', 'Inmueble vinculado correctamente.');
     }
 
     /**
@@ -221,15 +209,10 @@ class UserController extends Controller
      */
     public function destroyInmueble(User $user, Inmueble $inmueble)
     {
-        // Verificar que el inmueble pertenece al usuario
-        if ($inmueble->propietario_id !== $user->id) {
-            return redirect()->route('admin.users.edit', $user)
-                ->with('error', 'Este inmueble no pertenece a este usuario.');
-        }
-
-        $inmueble->delete();
+        // Desvincular usuario del inmueble
+        $user->inmuebles()->detach($inmueble->id);
 
         return redirect()->to(route('admin.users.edit', $user) . '#inmuebles')
-            ->with('success', 'Inmueble eliminado correctamente.');
+            ->with('success', 'Inmueble desvinculado correctamente.');
     }
 }

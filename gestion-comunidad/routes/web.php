@@ -147,7 +147,7 @@ Route::middleware('auth')->group(function () {
 
         // Recibos management
         // Recibos management
-        Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class)->only(['index', 'create', 'store']);
+        Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class)->only(['index', 'create', 'store', 'update', 'destroy']);
 
         // Noticias management
         Route::resource('noticias', \App\Http\Controllers\Admin\NoticiaController::class);

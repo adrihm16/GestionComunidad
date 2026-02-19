@@ -60,7 +60,7 @@ class BalanceController extends Controller
             ->get();
 
         // Lista de ingresos filtrada
-        $ingresos = $queryIngresos->with('inmueble.usuario')
+        $ingresos = $queryIngresos->with('inmueble.propietarios')
             ->orderBy('fecha_pago', 'desc')
             ->orderBy('updated_at', 'desc')
             ->get();

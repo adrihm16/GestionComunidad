@@ -27,9 +27,8 @@
     {{-- Nombre --}}
     <div>
         <label class="block text-sm font-medium text-main mb-1.5">Nombre <span class="text-red-500">*</span></label>
-        <input type="text" name="nombre" value="{{ old('nombre', $user?->nombre) }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('nombre') border-red-500 @enderror">
+        <input type="text" name="nombre" value="{{ old('nombre', $user?->nombre) }}" required class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                      {{ $errors->has('nombre') ? 'border-red-500' : 'border-gray-200' }}">
         @error('nombre')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
         @enderror
@@ -38,9 +37,8 @@
     {{-- Apellidos --}}
     <div>
         <label class="block text-sm font-medium text-main mb-1.5">Apellidos <span class="text-red-500">*</span></label>
-        <input type="text" name="apellidos" value="{{ old('apellidos', $user?->apellidos) }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('apellidos') border-red-500 @enderror">
+        <input type="text" name="apellidos" value="{{ old('apellidos', $user?->apellidos) }}" required class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                      {{ $errors->has('apellidos') ? 'border-red-500' : 'border-gray-200' }}">
         @error('apellidos')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
         @enderror
@@ -49,9 +47,8 @@
     {{-- Email --}}
     <div>
         <label class="block text-sm font-medium text-main mb-1.5">Email <span class="text-red-500">*</span></label>
-        <input type="email" name="email" value="{{ old('email', $user?->email) }}" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('email') border-red-500 @enderror">
+        <input type="email" name="email" value="{{ old('email', $user?->email) }}" required class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                      {{ $errors->has('email') ? 'border-red-500' : 'border-gray-200' }}">
         @error('email')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
         @enderror
@@ -60,9 +57,8 @@
     {{-- Teléfono --}}
     <div>
         <label class="block text-sm font-medium text-main mb-1.5">Teléfono</label>
-        <input type="tel" name="telefono" value="{{ old('telefono', $user?->telefono) }}" placeholder="666555444" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('telefono') border-red-500 @enderror">
+        <input type="tel" name="telefono" value="{{ old('telefono', $user?->telefono) }}" placeholder="666555444" class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                      {{ $errors->has('telefono') ? 'border-red-500' : 'border-gray-200' }}">
         @error('telefono')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
         @enderror
@@ -72,9 +68,8 @@
     <div>
         <label class="block text-sm font-medium text-main mb-1.5">Rol en el sistema <span
                 class="text-red-500">*</span></label>
-        <select name="rol_sistema" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                           focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                           transition-all duration-200 @error('rol_sistema') border-red-500 @enderror">
+        <select name="rol_sistema" required class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                       {{ $errors->has('rol_sistema') ? 'border-red-500' : 'border-gray-200' }}">
             <option value="">Selecciona un rol</option>
             <option value="vecino" {{ old('rol_sistema', $user?->rol_sistema) === 'vecino' ? 'selected' : '' }}>Vecino
             </option>
@@ -90,9 +85,8 @@
     <div>
         <label class="block text-sm font-medium text-main mb-1.5">Cargo en la comunidad</label>
         <input type="text" name="cargo_comunidad" value="{{ old('cargo_comunidad', $user?->cargo_comunidad) }}"
-            placeholder="Ej: Presidente, Secretario, Tesorero..." class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('cargo_comunidad') border-red-500 @enderror">
+            placeholder="Ej: Presidente, Secretario, Tesorero..." class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                   {{ $errors->has('cargo_comunidad') ? 'border-red-500' : 'border-gray-200' }}">
         @error('cargo_comunidad')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
         @enderror
@@ -103,9 +97,8 @@
         <label class="block text-sm font-medium text-main mb-1.5">IBAN <span
                 class="text-xs text-muted font-normal">(Privado)</span></label>
         <input type="text" name="iban" value="{{ old('iban', $user?->iban) }}"
-            placeholder="ES00 0000 0000 0000 0000 0000" maxlength="34" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('iban') border-red-500 @enderror">
+            placeholder="ES00 0000 0000 0000 0000 0000" maxlength="34" class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                   {{ $errors->has('iban') ? 'border-red-500' : 'border-gray-200' }}">
         <p class="text-[11px] text-muted mt-1">Este dato solo será visible para administradores y el vecino titular.</p>
         @error('iban')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
@@ -115,8 +108,8 @@
     {{-- Multiple Inmuebles Assignment (Mandatory only during High) --}}
     @if(!$user)
         <div x-data="{ 
-                            inmuebles: [{ tipo: '', bloque: '', piso: '', puerta: '' }]
-                        }" class="border-t border-gray-100 pt-6">
+                                    inmuebles: [{ tipo: '', bloque: '', piso: '', puerta: '' }]
+                                }" class="border-t border-gray-100 pt-6">
 
             <div class="flex items-center justify-between mb-4">
                 <div>
@@ -189,12 +182,14 @@
                                             class="text-red-500">*</span></label>
                                     <input type="text" :name="'inmuebles['+index+'][puerta]'" x-model="inmueble.puerta"
                                         :required="inmueble.tipo === 'piso' || inmueble.tipo === 'local'"
+                                        :disabled="!(inmueble.tipo === 'piso' || inmueble.tipo === 'local')"
                                         placeholder="A, B, 1, 2..."
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm focus:ring-primary/30 focus:border-primary transition-all">
                                 </div>
                                 {{-- Hidden placeholder for puerta in garaje/trastero to satisfy DB --}}
                                 <input type="hidden" :name="'inmuebles['+index+'][puerta]'" value="-"
-                                    x-show="inmueble.tipo === 'garaje' || inmueble.tipo === 'trastero' || inmueble.tipo === ''">
+                                    x-show="inmueble.tipo === 'garaje' || inmueble.tipo === 'trastero' || inmueble.tipo === ''"
+                                    :disabled="inmueble.tipo === 'piso' || inmueble.tipo === 'local'">
                             </div>
                         </div>
                     </div>
@@ -220,9 +215,8 @@
             {{ $user ? 'Nueva contraseña' : 'Contraseña' }}
             @if(!$user) <span class="text-red-500">*</span> @endif
         </label>
-        <input type="password" name="password" @if(!$user) required @endif class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                          transition-all duration-200 @error('password') border-red-500 @enderror">
+        <input type="password" name="password" @if(!$user) required @endif class="w-full px-4 py-2.5 rounded-xl border text-sm text-main focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all duration-200 
+                      {{ $errors->has('password') ? 'border-red-500' : 'border-gray-200' }}">
         <p class="text-xs text-muted mt-1.5">Mínimo 8 caracteres</p>
         @error('password')
             <p class="text-xs text-red-500 mt-1">{{ $message }}</p>

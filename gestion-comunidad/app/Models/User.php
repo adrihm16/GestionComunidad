@@ -58,9 +58,9 @@ class User extends Authenticatable
     /**
      * Inmuebles que posee el usuario.
      */
-    public function inmuebles(): HasMany
+    public function inmuebles()
     {
-        return $this->hasMany(Inmueble::class, 'propietario_id');
+        return $this->belongsToMany(Inmueble::class, 'inmueble_user');
     }
 
     /**

@@ -43,24 +43,28 @@
         <x-admin.users.form :user="$user" :action="route('admin.users.update', $user)" method="PUT">
             <x-slot:actions_left>
                 @if($user->id !== auth()->id())
-                    <form method="POST" action="{{ route('admin.users.destroy', $user) }}"
-                        onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')" class="inline w-full sm:w-auto">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl w-full sm:w-auto
-                                       bg-red-600 text-white text-sm font-medium shadow-md
-                                       transition-all duration-200 hover:scale-105 active:scale-95">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
-                            </svg>
-                            Eliminar Cuenta
-                        </button>
-                    </form>
+                    <button type="submit" form="delete-user-form" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl w-full sm:w-auto
+                                           bg-red-600 text-white text-sm font-medium shadow-md
+                                           transition-all duration-200 hover:scale-105 active:scale-95">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                        </svg>
+                        Eliminar Cuenta
+                    </button>
                 @endif
             </x-slot:actions_left>
         </x-admin.users.form>
+
+        {{-- Separated delete form --}}
+        @if($user->id !== auth()->id())
+            <form id="delete-user-form" method="POST" action="{{ route('admin.users.destroy', $user) }}"
+                onsubmit="return confirm('¿Estás seguro de eliminar este usuario?')" class="hidden">
+                @csrf
+                @method('DELETE')
+            </form>
+        @endif
 
         {{-- Inmuebles Section --}}
         <div id="inmuebles" class="scroll-mt-20">
@@ -93,10 +97,10 @@
                                 {{-- Icon based on type --}}
                                 <div
                                     class="flex items-center justify-center w-10 h-10 rounded-xl flex-shrink-0
-                                                                                                                    {{ $inmueble->tipo === 'piso' ? 'bg-blue-100 text-blue-600' : '' }}
-                                                                                                                    {{ $inmueble->tipo === 'local' ? 'bg-purple-100 text-purple-600' : '' }}
-                                                                                                                    {{ $inmueble->tipo === 'garaje' ? 'bg-emerald-100 text-emerald-600' : '' }}
-                                                                                                                    {{ $inmueble->tipo === 'trastero' ? 'bg-amber-100 text-amber-600' : '' }}">
+                                                                                                                                {{ $inmueble->tipo === 'piso' ? 'bg-blue-100 text-blue-600' : '' }}
+                                                                                                                                {{ $inmueble->tipo === 'local' ? 'bg-purple-100 text-purple-600' : '' }}
+                                                                                                                                {{ $inmueble->tipo === 'garaje' ? 'bg-emerald-100 text-emerald-600' : '' }}
+                                                                                                                                {{ $inmueble->tipo === 'trastero' ? 'bg-amber-100 text-amber-600' : '' }}">
                                     @if($inmueble->tipo === 'piso')
                                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
                                             stroke="currentColor" stroke-width="2">
@@ -165,8 +169,8 @@
             {{-- Add Inmueble Form (Collapsible) --}}
             <div x-data="{ open: false, tipo: '' }" class="border-t border-gray-100 pt-4">
                 <button type="button" @click="open = !open" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl 
-                                                       bg-primary text-white text-sm font-medium shadow-md
-                                                       transition-all duration-200 hover:scale-105 active:scale-95">
+                                                           bg-primary text-white text-sm font-medium shadow-md
+                                                           transition-all duration-200 hover:scale-105 active:scale-95">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -185,8 +189,8 @@
                             <label class="block text-sm font-medium text-main mb-1.5">Tipo <span
                                     class="text-red-500">*</span></label>
                             <select name="tipo" x-model="tipo" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                                                   focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                                                   transition-all duration-200">
+                                                                       focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                                       transition-all duration-200">
                                 <option value="">Selecciona tipo</option>
                                 <option value="piso">Piso</option>
                                 <option value="local">Local</option>
@@ -199,8 +203,8 @@
                         <div>
                             <label class="block text-sm font-medium text-main mb-1.5">Bloque</label>
                             <input type="text" name="bloque" placeholder="A, B, C..." maxlength="10" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                                                  focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                                                  transition-all duration-200">
+                                                                      focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                                      transition-all duration-200">
                         </div>
 
                         {{-- Campos para PISO y LOCAL (Piso + Puerta separados) --}}
@@ -212,8 +216,8 @@
                                             class="text-red-500">*</span></label>
                                     <input type="text" name="piso" placeholder="1, 2, 3, B, S..." maxlength="10" required
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                                                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                                                          transition-all duration-200">
+                                                                              focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                                              transition-all duration-200">
                                 </div>
 
                                 {{-- Puerta --}}
@@ -222,8 +226,8 @@
                                             class="text-red-500">*</span></label>
                                     <input type="text" name="puerta" placeholder="A, B, 1, 2..." maxlength="10" required
                                         class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                                                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                                                          transition-all duration-200">
+                                                                              focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                                              transition-all duration-200">
                                 </div>
                             </div>
                         </template>
@@ -236,8 +240,8 @@
                                 </label>
                                 <input type="text" name="piso" placeholder="G1, G2, T1, T2, A, B, 1, 2..." maxlength="10"
                                     required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm text-main
-                                                                      focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
-                                                                      transition-all duration-200">
+                                                                          focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary
+                                                                          transition-all duration-200">
                                 <p class="text-xs text-muted mt-1.5">
                                     Ejemplo: G1, G2 (garajes) o T1, T2 (trasteros)
                                 </p>
@@ -251,8 +255,8 @@
                     <div class="flex justify-end">
                         <button type="submit" :disabled="submitting"
                             :class="submitting ? 'opacity-50 cursor-not-allowed' : 'hover:scale-105 active:scale-95'" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl 
-                                                               bg-emerald-600 text-white text-sm font-medium shadow-md
-                                                               transition-all duration-200">
+                                                                   bg-emerald-600 text-white text-sm font-medium shadow-md
+                                                                   transition-all duration-200">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
                                 stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />

@@ -9,7 +9,7 @@ class ReciboController extends Controller
 {
     public function index()
     {
-        $recibos = Recibo::with('inmueble.propietario')->get();
+        $recibos = Recibo::with('inmueble.propietarios')->get();
         return view('recibos.index', compact('recibos'));
     }
 
@@ -37,7 +37,7 @@ class ReciboController extends Controller
 
     public function show(Recibo $recibo)
     {
-        $recibo->load('inmueble.propietario');
+        $recibo->load('inmueble.propietarios');
         return view('recibos.show', compact('recibo'));
     }
 

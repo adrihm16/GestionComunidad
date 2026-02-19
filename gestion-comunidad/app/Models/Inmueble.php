@@ -11,7 +11,6 @@ class Inmueble extends Model
     protected $table = 'inmuebles';
 
     protected $fillable = [
-        'propietario_id',
         'tipo',
         'bloque',
         'piso',
@@ -19,11 +18,11 @@ class Inmueble extends Model
     ];
 
     /**
-     * Propietario del inmueble.
+     * Propietarios del inmueble.
      */
-    public function propietario(): BelongsTo
+    public function propietarios()
     {
-        return $this->belongsTo(User::class, 'propietario_id');
+        return $this->belongsToMany(User::class, 'inmueble_user', 'inmueble_id', 'user_id');
     }
 
     /**
