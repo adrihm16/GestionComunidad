@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,14 +15,22 @@
 
     {{-- Base styles fallback --}}
     <style>
-        [x-cloak] { display: none !important; }
-        body { background-color: #F5F7FA; font-family: 'Poppins', sans-serif; color: #1A1A1A; }
+        [x-cloak] {
+            display: none !important;
+        }
+
+        body {
+            background-color: #F5F7FA;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A1A;
+        }
     </style>
 
     {{-- Tailwind via CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -40,36 +49,63 @@
                 },
             },
         }
+
+        // Initialize dark mode before Alpine starts (flicker prevention)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Global Theme Store
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('theme', {
+                darkMode: document.documentElement.classList.contains('dark'),
+                toggle() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                }
+            })
+        })
     </script>
 </head>
-<body class="bg-page font-poppins text-main min-h-screen flex flex-col" x-data="{ sidebarOpen: false }" x-cloak>
+
+<body class="bg-page dark:bg-[#071309] font-poppins text-main dark:text-gray-100 min-h-screen flex flex-col"
+    x-data="{ sidebarOpen: window.innerWidth > 768 }" x-cloak>
 
     {{-- Header --}}
     @include('components.header.header')
 
     <div class="flex flex-1 max-w-screen-2xl mx-auto w-full relative pt-4">
-        
+
         {{-- Sidebar --}}
         @include('components.admin.sidebar')
 
         {{-- Main Content --}}
-        <main class="flex-1 px-5 py-6 w-full overflow-x-hidden transition-all duration-300 ease-in-out"
-              :class="sidebarOpen ? 'md:ml-64' : ''">
-            
+        <main class="flex-1 px-5 py-6 w-full overflow-x-hidden transition-all duration-300 ease-in-out">
+
             {{-- Toggle Button (Visible when sidebar is closed) --}}
-            <button x-show="!sidebarOpen"
-                    @click="sidebarOpen = true"
-                    x-transition:enter="transition ease-out duration-300"
-                    x-transition:enter-start="opacity-0 -translate-x-4"
-                    x-transition:enter-end="opacity-100 translate-x-0"
-                    class="fixed left-4 top-[90px] z-40 p-3 bg-primary text-white rounded-full shadow-lg hover:scale-110 transition-transform flex"
-                    title="Abrir menú">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            <button x-show="!sidebarOpen" @click="sidebarOpen = true"
+                x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-4"
+                x-transition:enter-end="opacity-100 translate-x-0"
+                class="fixed right-6 bottom-6 z-40 p-4 bg-primary text-white rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all flex"
+                title="Abrir menú">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
             </button>
 
-            @yield('content')
+            <div class="max-w-screen-xl mx-auto">
+                @yield('content')
+            </div>
         </main>
     </div>
 
@@ -77,4 +113,5 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </body>
+
 </html>

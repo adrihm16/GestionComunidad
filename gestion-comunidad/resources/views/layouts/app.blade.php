@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,13 +15,18 @@
 
     {{-- Base styles fallback (prevents white flash while Tailwind CDN loads) --}}
     <style>
-        body { background-color: #F5F7FA; font-family: 'Poppins', sans-serif; color: #1A1A1A; }
+        body {
+            background-color: #F5F7FA;
+            font-family: 'Poppins', sans-serif;
+            color: #1A1A1A;
+        }
     </style>
 
     {{-- Tailwind via CDN (dev fallback) --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {
@@ -39,9 +45,35 @@
                 },
             },
         }
+
+        // Initialize dark mode before Alpine starts (flicker prevention)
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+
+        // Global Theme Store
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('theme', {
+                darkMode: document.documentElement.classList.contains('dark'),
+                toggle() {
+                    this.darkMode = !this.darkMode;
+                    if (this.darkMode) {
+                        document.documentElement.classList.add('dark');
+                        localStorage.theme = 'dark';
+                    } else {
+                        document.documentElement.classList.remove('dark');
+                        localStorage.theme = 'light';
+                    }
+                }
+            })
+        })
     </script>
 </head>
-<body class="bg-page font-poppins text-main min-h-screen flex flex-col">
+
+<body class="bg-page dark:bg-[#071309] font-poppins text-main dark:text-gray-100 min-h-screen flex flex-col" x-data="{}"
+    x-cloak>
 
     {{-- Header --}}
     @include('components.header.header')
@@ -58,4 +90,5 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </body>
+
 </html>

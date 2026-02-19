@@ -8,6 +8,7 @@ use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\NoticiaController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\VecinoController;
+use App\Http\Controllers\Admin\NoticiaController as AdminNoticiaController;
 use App\Models\Evento;
 use Carbon\Carbon;
 
@@ -128,11 +129,13 @@ Route::middleware('auth')->group(function () {
     Route::resource('incidencias', IncidenciaController::class);
     Route::post('incidencias/{incidencia}/comentarios', [IncidenciaController::class, 'addComment'])->name('incidencias.comentarios.store');
     Route::post('incidencias/{incidencia}/estado', [IncidenciaController::class, 'updateEstado'])->name('incidencias.estado.update');
-    Route::resource('noticias', NoticiaController::class);
+    Route::resource('noticias', NoticiaController::class)->only(['index', 'show']);
+
     Route::resource('eventos', EventoController::class);
     
     // Admin routes - Only accessible by admin users
     Route::middleware('admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/', [\App\Http\Controllers\Admin\UserController::class, 'dashboard'])->name('dashboard');
         Route::resource('users', \App\Http\Controllers\Admin\UserController::class);
         
         // Inmuebles management for users
@@ -143,6 +146,12 @@ Route::middleware('auth')->group(function () {
 
         // Recibos management
         Route::resource('recibos', \App\Http\Controllers\Admin\ReciboController::class)->only(['index', 'create', 'store']);
+
+        // Noticias management
+        Route::resource('noticias', AdminNoticiaController::class)->except(['show']);
+
+        // Incidencias management
+        Route::resource('incidencias', \App\Http\Controllers\Admin\IncidenciaController::class)->only(['index', 'store', 'destroy', 'update']);
     });
 });
 
