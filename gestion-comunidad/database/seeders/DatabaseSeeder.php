@@ -32,13 +32,13 @@ class DatabaseSeeder extends Seeder
             'cargo_comunidad' => 'Presidente',
             'fecha_registro' => now(),
         ]);
-        Inmueble::create([
-            'propietario_id' => $admin->id,
+        $inmuebleAdmin = Inmueble::create([
             'tipo' => 'piso',
             'bloque' => 'A',
             'piso' => '1',
             'puerta' => 'A',
         ]);
+        $admin->inmuebles()->attach($inmuebleAdmin->id);
 
         // Vecinos
         $vecinos = [
@@ -65,13 +65,13 @@ class DatabaseSeeder extends Seeder
                 'fecha_registro' => now(),
             ]);
 
-            Inmueble::create([
-                'propietario_id' => $user->id,
+            $inmuebleVecino = Inmueble::create([
                 'tipo' => 'piso',
                 'bloque' => 'A',
                 'piso' => $v['piso'],
                 'puerta' => $v['puerta'],
             ]);
+            $user->inmuebles()->attach($inmuebleVecino->id);
 
             $vecinoUsers[] = $user;
         }

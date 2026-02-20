@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Inmueble;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -52,6 +54,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
+            // User Data
             'nombre' => ['required', 'string', 'max:100'],
             'apellidos' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -59,16 +62,45 @@ class UserController extends Controller
             'telefono' => ['nullable', 'string', 'max:15'],
             'rol_sistema' => ['required', Rule::in(['admin', 'vecino'])],
             'cargo_comunidad' => ['nullable', 'string', 'max:100'],
+            'iban' => ['nullable', 'string', 'max:34'],
+            
+            // Mandatory Multiple Properties
+            'inmuebles' => ['required', 'array', 'min:1'],
+            'inmuebles.*.tipo' => ['required', Rule::in(['piso', 'local', 'garaje', 'trastero'])],
+            'inmuebles.*.bloque' => ['nullable', 'string', 'max:10'],
+            'inmuebles.*.piso' => ['required', 'string', 'max:10'],
+            'inmuebles.*.puerta' => ['required', 'string', 'max:10'],
         ]);
 
-        $validated['password'] = Hash::make($validated['password']);
-        $validated['fecha_registro'] = now();
+        try {
+            return DB::transaction(function () use ($validated) {
+                // 1. Create User
+                $userData = collect($validated)->except(['inmuebles'])->toArray();
+                $userData['password'] = Hash::make($userData['password']);
+                $userData['fecha_registro'] = now();
+                
+                $user = User::create($userData);
 
-        $user = User::create($validated);
+                // 2. Create or Link Properties
+                foreach ($validated['inmuebles'] as $inmData) {
+                    // Find existing property by physical address
+                    $inmueble = Inmueble::firstOrCreate([
+                        'tipo' => $inmData['tipo'],
+                        'bloque' => $inmData['bloque'] ?? null,
+                        'piso' => $inmData['piso'],
+                        'puerta' => $inmData['puerta'],
+                    ]);
 
-        // Redirigir a editar para que pueda agregar inmuebles inmediatamente
-        return redirect()->route('admin.users.edit', $user)
-            ->with('success', 'Usuario creado correctamente. Ahora puedes asignarle inmuebles.');
+                    // Link user to property (attach)
+                    $user->inmuebles()->attach($inmueble->id);
+                }
+
+                return redirect()->route('admin.users.index')
+                    ->with('success', 'Usuario e inmuebles creados correctamente.');
+            });
+        } catch (\Exception $e) {
+            return back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     /**
@@ -105,6 +137,7 @@ class UserController extends Controller
             'telefono' => ['nullable', 'string', 'max:15'],
             'rol_sistema' => ['required', Rule::in(['admin', 'vecino'])],
             'cargo_comunidad' => ['nullable', 'string', 'max:100'],
+            'iban' => ['nullable', 'string', 'max:34'],
         ]);
 
         // Actualizar contraseña solo si se proporciona
@@ -127,7 +160,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         // Evitar que el admin se elimine a sí mismo
-        if ($user->id === auth()->id()) {
+        if ($user->is(Auth::user())) {
             return redirect()->route('admin.users.index')
                 ->with('error', 'No puedes eliminar tu propia cuenta desde aquí.');
         }
@@ -150,25 +183,25 @@ class UserController extends Controller
             'puerta' => ['required', 'string', 'max:10'],
         ]);
 
-        // Verificar si el inmueble ya existe
-        $existingInmueble = Inmueble::where('tipo', $validated['tipo'])
-            ->where('bloque', $validated['bloque'])
-            ->where('piso', $validated['piso'])
-            ->where('puerta', $validated['puerta'])
-            ->first();
+        // Buscar o crear el inmueble (ubicación física)
+        $inmueble = Inmueble::firstOrCreate([
+            'tipo' => $validated['tipo'],
+            'bloque' => $validated['bloque'] ?? null,
+            'piso' => $validated['piso'],
+            'puerta' => $validated['puerta'],
+        ]);
 
-        if ($existingInmueble) {
-            return redirect()->route('admin.users.edit', $user)
-                ->with('error', 'Este inmueble ya existe y está asignado a ' . 
-                       $existingInmueble->propietario->nombre . ' ' . 
-                       $existingInmueble->propietario->apellidos . '.');
+        // Verificar si el usuario ya tiene este inmueble asignado
+        if ($user->inmuebles()->where('inmueble_id', $inmueble->id)->exists()) {
+            return redirect()->to(route('admin.users.edit', $user) . '#inmuebles')
+                ->with('error', 'Este inmueble ya está asignado a este usuario.');
         }
 
-        $validated['propietario_id'] = $user->id;
-        Inmueble::create($validated);
+        // Vincular usuario al inmueble
+        $user->inmuebles()->attach($inmueble->id);
 
-        return redirect()->route('admin.users.edit', $user)
-            ->with('success', 'Inmueble asignado correctamente.');
+        return redirect()->to(route('admin.users.edit', $user) . '#inmuebles')
+            ->with('success', 'Inmueble vinculado correctamente.');
     }
 
     /**
@@ -176,15 +209,10 @@ class UserController extends Controller
      */
     public function destroyInmueble(User $user, Inmueble $inmueble)
     {
-        // Verificar que el inmueble pertenece al usuario
-        if ($inmueble->propietario_id !== $user->id) {
-            return redirect()->route('admin.users.edit', $user)
-                ->with('error', 'Este inmueble no pertenece a este usuario.');
-        }
+        // Desvincular usuario del inmueble
+        $user->inmuebles()->detach($inmueble->id);
 
-        $inmueble->delete();
-
-        return redirect()->route('admin.users.edit', $user)
-            ->with('success', 'Inmueble eliminado correctamente.');
+        return redirect()->to(route('admin.users.edit', $user) . '#inmuebles')
+            ->with('success', 'Inmueble desvinculado correctamente.');
     }
 }

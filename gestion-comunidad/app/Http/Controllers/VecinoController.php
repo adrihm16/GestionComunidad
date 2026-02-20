@@ -10,11 +10,11 @@ class VecinoController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Inmueble::with('propietario');
+        $query = Inmueble::with('propietarios');
 
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->whereHas('propietario', function ($q) use ($search) {
+            $query->whereHas('propietarios', function ($q) use ($search) {
                 $q->where('nombre', 'like', "%{$search}%")
                   ->orWhere('apellidos', 'like', "%{$search}%")
                   ->orWhere('cargo_comunidad', 'like', "%{$search}%");

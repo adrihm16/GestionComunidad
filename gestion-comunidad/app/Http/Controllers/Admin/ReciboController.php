@@ -16,7 +16,7 @@ class ReciboController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Recibo::with(['inmueble.propietario']);
+        $query = Recibo::with(['inmueble.propietarios']);
 
         // Year Filter
         if ($request->filled('anio')) {
@@ -36,7 +36,7 @@ class ReciboController extends Controller
                   ->orWhereHas('inmueble', function($q2) use ($search) {
                       $q2->where('piso', 'like', "%{$search}%")
                          ->orWhere('puerta', 'like', "%{$search}%")
-                         ->orWhereHas('propietario', function($q3) use ($search) {
+                         ->orWhereHas('propietarios', function($q3) use ($search) {
                              $q3->where('nombre', 'like', "%{$search}%")
                                 ->orWhere('apellidos', 'like', "%{$search}%");
                          });
@@ -45,7 +45,7 @@ class ReciboController extends Controller
         }
 
         $recibos = $query->orderBy('fecha_emision', 'desc')->simplePaginate(5)->withQueryString();
-        $inmuebles = Inmueble::with('propietario')->get(); // For the create modal
+        $inmuebles = Inmueble::with('propietarios')->get(); // For the create modal
 
         return view('admin.recibos.index', compact('recibos', 'inmuebles'));
     }
@@ -106,7 +106,7 @@ class ReciboController extends Controller
         if ($request->has('toggle_status')) {
             $recibo->estado = $recibo->estado === 'pagado' ? 'pendiente' : 'pagado';
             if ($recibo->estado === 'pagado') {
-                $recibo->fecha_pago = now();
+                $recibo->fecha_pago = \Illuminate\Support\Carbon::now();
             } else {
                 $recibo->fecha_pago = null;
             }

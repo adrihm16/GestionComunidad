@@ -3,21 +3,45 @@
 @section('title', 'Crear Usuario - Panel Admin')
 
 @section('content')
-<div class="flex flex-col gap-5 max-w-2xl mx-auto">
+    <div class="flex flex-col gap-5 max-w-2xl mx-auto">
 
-    {{-- Header --}}
-    <div class="flex items-center gap-3">
-        <a href="{{ route('admin.users.index') }}" 
-           class="p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-            </svg>
-        </a>
-        @include('components.ui.section-title', ['title' => 'Crear Nuevo Usuario', 'titleClass' => 'text-xl mb-0'])
+        {{-- Header --}}
+        <div class="flex items-center gap-3">
+            <a href="{{ route('admin.users.index') }}"
+                class="p-2 rounded-lg hover:bg-primary/5 transition-colors duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                </svg>
+            </a>
+            @include('components.ui.section-title', ['title' => 'Crear Nuevo Usuario', 'titleClass' => 'text-xl mb-0'])
+        </div>
+
+        {{-- Success/Error Messages --}}
+        @if(session('success'))
+            <div class="flex items-center gap-3 p-4 rounded-xl bg-emerald-50 border border-emerald-100 text-emerald-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="text-sm font-medium">{{ session('success') }}</span>
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="flex items-center gap-3 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                </svg>
+                <span class="text-sm font-medium">{{ session('error') }}</span>
+            </div>
+        @endif
+
+        {{-- Form Component --}}
+        <x-admin.users.form :action="route('admin.users.store')" />
+
     </div>
-
-    {{-- Form Component --}}
-    <x-admin.users.form :action="route('admin.users.store')" />
-
-</div>
 @endsection
